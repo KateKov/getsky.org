@@ -1,21 +1,33 @@
-import { GET_ADVERTS_REQUEST, GET_ADVERTS_RESPONSE } from './actions';
+import get from 'lodash/get';
+import { LOAD_ADVERTS, LOAD_ADVERTS_SUCCESS, LOAD_ADVERTS_FAILED } from './actions';
 
 export const initialState = {
     loading: true,
     buyAdverts: [],
-    sellAdverts: []
+    sellAdverts: [],
+    error: '',
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case GET_ADVERTS_REQUEST:
+        case LOAD_ADVERTS:
             return initialState;
-        case GET_ADVERTS_RESPONSE:
+
+        case LOAD_ADVERTS_SUCCESS:
             return {
                 ...state,
                 ...action.allAdverts,
                 loading: false,
             };
+
+        case LOAD_ADVERTS_FAILED:
+        const error = get(action, 'error.response.data', 'error');
+            return {
+                ...state,
+                loading: false,
+                error,
+            };
+
         default:
             return state;
     }

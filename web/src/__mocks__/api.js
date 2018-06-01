@@ -2,6 +2,10 @@ export const getAllAdverts = () => new Promise((resolve, reject) => {
     resolve({ sellAdverts: [], buyAdverts: [] });
 });
 
+export const getAllAdverts404 = () => new Promise((resolve, reject) => {
+    reject({ response: { status: 404 } });
+});
+
 export const loginOk = () => new Promise((resolve, reject) => {
     resolve({});
 });

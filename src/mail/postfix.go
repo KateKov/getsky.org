@@ -32,7 +32,7 @@ func (m PostfixMailer) SendFeedback(l *Letter) error {
 func (m PostfixMailer) SendMail(l *Letter) error {
 	msg := getBody(l, m.from)
 
-	client, err := smtp.Dial("host.docker.internal:25")
+	client, err := smtp.Dial(m.host)
 	if err != nil {
 		return nil
 	}

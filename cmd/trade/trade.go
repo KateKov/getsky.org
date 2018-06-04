@@ -19,7 +19,7 @@ func main() {
 	mysqlFlag := flag.String("mysql", "root:root@(0.0.0.0:3306)", "MySQL connect string")
 	recaptchaSecret := flag.String("recaptchaSecret", "6LcIDlkUAAAAAB7-YebjJSUBb2aINasOnNk0zF8W", "reCaptcha secret key")
 
-	mailHost := flag.String("mailHost", "smtp.gmail.com:587", "SMTP server")
+	mailHost := flag.String("mailHost", "postfix:25", "SMTP server")
 	mailFromAddress := flag.String("mailFromAddress", "noreply@getsky.org", "From address for email")
 	mailUsername := flag.String("mailUsername", "test@email.com", "SMTP server user")
 	mailPassword := flag.String("mailPassword", "password", "SMTP server password")

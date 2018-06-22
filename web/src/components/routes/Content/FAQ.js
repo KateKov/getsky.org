@@ -1,13 +1,19 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 
 import { getPageTitle } from 'utils';
+import theme from '../../theme';
 import { H1, H3, P } from 'components/layout/Text';
 
 import TipToggles from './TipToggles';
 import TextContainer from './TextContainer';
 
 const MT = '5px';
+
+const Link = styled.a`
+    color: ${theme.colors.blue};
+`;
 
 export default () => (
     <TextContainer flex='1 0 auto' flexDirection="column" py={5}>
@@ -27,7 +33,7 @@ export default () => (
         </TipToggles>
 
         <TipToggles label={<H3>Where do I get a Skycoin wallet?</H3>} mt={MT}>
-            <P>You can download the official Skycoin wallet here (https://www.skycoin.net/downloads/). We recommend you download the Installer version of the wallet for your operating system. Always keep a Backup of your Skycoin wallet and write down your seed for safe keeping.</P>
+            <P>You can download the official Skycoin wallet here ( <Link href="https://www.skycoin.net/downloads/" target="_blank">https://www.skycoin.net/downloads/</Link>). We recommend you download the Installer version of the wallet for your operating system. Always keep a Backup of your Skycoin wallet and write down your seed for safe keeping.</P>
         </TipToggles>
 
         <TipToggles label={<H3>Do I have to sell SKY at a fixed price?</H3>} mt={MT}>

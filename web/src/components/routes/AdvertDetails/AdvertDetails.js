@@ -3,6 +3,7 @@ import { Flex, Box } from 'grid-styled';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
+import get from 'lodash/get';
 
 import { getPageTitle, round } from 'utils';
 import media from 'media';
@@ -80,8 +81,8 @@ const advertValueToString = (amountFrom, amountTo, price = 1) => {
     if (!amountTo) {
         return amountFrom.times(price).toString();
     }
-
-    return `${amountFrom.times(price).toString()} to ${amountTo.times(price).toString()}`;
+    
+    return `${get(amountFrom, 'times(price).toString()', amountFrom)} to ${get(amountTo, 'times(price).toString()', amountTo)}`;
 };
 
 const getAdvertPrice = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment) => {

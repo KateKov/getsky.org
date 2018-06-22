@@ -52,7 +52,8 @@ class SkyPrice extends React.Component {
                         name="selectedCurrency"
                         options={currencies}
                         onChange={this.changeSelectedCurrency}
-                        input={{ value: selectedCurrency }} />
+                        input={{ value: selectedCurrency }} 
+                        bg="#07172e" />
                 </CurrencySelectorWrapper>
             </Flex>
         );

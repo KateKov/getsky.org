@@ -24,12 +24,13 @@ const SelectWrapper = styled.div`
 const Select = styled.select`
     width: 100%;
     height: ${props => props.theme.controlHeight}px;
-    padding: ${props => props.theme.space[1]}px ${props => props.theme.space[6]}px ${props => props.theme.space[1]}px ${props => props.theme.space[2]}px;
+    padding: 2px 30px 2px 10px;
     border-width: 1px;
     border-style: solid;
     border-color: ${props => getBorderColor(props)};
     border-radius: 0;
-    background: transparent;
+    background: ${props => (props.bg ? props.bg : 'transparent')};
+    color: ${props => (props.color? props.color : 'initial')};
     font-family: ${props => props.theme.fontLight};
     font-size: ${props => props.theme.fontSizes[1]}px;
     
@@ -44,9 +45,9 @@ const Select = styled.select`
     }
 `;
 
-const ControlDropdown = ({ name, options, onChange, error, input, disabled }) =>
+const ControlDropdown = ({ name, options, onChange, error, input, disabled, bg, color }) =>
     <SelectWrapper>
-        <Select name={name} value={input && input.value} onChange={onChange} error={error} disabled={disabled} >
+        <Select name={name} value={input && input.value} onChange={onChange} error={error} disabled={disabled} bg={bg} color={color}>
             <option value="" disabled>Select</option>
             {options.map((item, i) => <option value={item.value} key={i}>{item.text}</option>)}
         </Select>

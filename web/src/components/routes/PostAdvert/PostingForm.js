@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, Field } from 'redux-form';
 import { Box } from 'grid-styled'
 import { Decimal } from 'decimal.js-light';
+import get from 'lodash/get';
 
 import { FormRangedSingleInput, FormCheckboxGroup, FormDropdownInput, FormGroup } from 'components/layout/Form';
 import { Button } from 'components/layout/Button';
@@ -23,7 +24,8 @@ const rData = required(v => v ? v.data === 0 ? 1 : v.data : v);
 const minData0 = min(0, v => v.data);
 const maxData9999 = max(9999, v => v.data);
 
-const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency, handleSubmit, editMode, theForm }) => {
+const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency, handleSubmit, editMode, theForm, preview }) => {
+
     return (
         <Form onSubmit={handleSubmit} noValidate>
             <Box width={[1, 1, 1 / 2]}>
@@ -36,7 +38,7 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
                         isRequired
                         parse={({ from, to, mode }) => {
                             return {
-                                from: from !== '' ? new Decimal(from) : '',
+                                from: from !== '' ? new Decimal(from) :  get(preview, 'amountFrom.d[0]', ''),
                                 to: (to && to !== '') ? new Decimal(to) : '',
                                 mode
                             };
@@ -77,7 +79,11 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
                         validate={[rData, minData0, maxData9999]}
                     />
                 </FormGroup>
-                <LocationFormGroup states={states} countries={countries} showStates={countryInFormHasStates(theForm)} />
+                <LocationFormGroup 
+                    states={states} 
+                    countries={countries} 
+                    showStates={countryInFormHasStates(theForm)}
+                    />
                 <AdditionalInformationSample />
                 <Button type="submit" text={editMode ? 'Save' : 'Next'} primary />
             </Box>
@@ -85,6 +91,6 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
     );
 }
 
-export default connect(({ form }) => ({ theForm: form.postAdvert }))(
+export default connect(({ form, preview }) => ({ theForm: form.postAdvert, preview }))(
     reduxForm({ form: 'postAdvert', destroyOnUnmount: false })(PostAdvert)
 );

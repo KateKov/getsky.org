@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import { resetPasswordRequest, recoverPassword } from 'api/index';
 
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
@@ -9,10 +10,13 @@ export const resetPassword = (email, recaptcha) => async dispatch => {
         await resetPasswordRequest({ email, recaptcha });
         dispatch({ type: RESET_PASSWORD_SUCCESS });
     } catch (e) {
-        if (e.response.status === 404) {
-            dispatch({ type: RESET_PASSWORD_FAILED });
-            return Promise.reject({ email: 'Such email doesn\'t exist' });
-        }
+        const errorMessage = e.response.status === 404 ?
+            'Such email doesn\'t exist' :
+            get(e, 'response.data[0].message', 'Error');
+        const error = { email: errorMessage};
+
+        dispatch({ type: RESET_PASSWORD_FAILED });
+        return Promise.reject(error);
     }
 };
 

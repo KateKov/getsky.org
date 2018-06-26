@@ -19,6 +19,7 @@ export const getConflictErrorMessage = (errors) => {
 
 export const register = (user) =>
     async dispatch => {
+		dispatch({ type: REGISTER_USER_REQUEST });
         try {
             await registerUser(user);
             dispatch({ type: REGISTER_USER_RESPONSE_OK });

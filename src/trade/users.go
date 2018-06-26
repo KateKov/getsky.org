@@ -122,8 +122,10 @@ func RegisterHandler(s *HTTPServer) httputil.APIHandler {
 		err = s.users.Register(user, req.Password)
 		if err != nil {
 			if ce.IsDbValidationError(err) {
-				errorType := ce.RegistrationDatabaseError
-				return ce.DatabaseErrorResponse(err, errorType)
+				return httputil.StatusError{
+					Err:  err,
+					Code: http.StatusConflict,
+				}
 			}
 
 			return httputil.StatusError{

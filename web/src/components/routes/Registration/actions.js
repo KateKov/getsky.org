@@ -6,23 +6,35 @@ export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_RESPONSE_OK = 'REGISTER_USER_RESPONSE_OK';
 export const REGISTER_USER_RESPONSE_ERROR = 'REGISTER_USER_RESPONSE_ERROR';
 
+export const getConflictErrorMessage = (errors) => {
+    const regex = /for key '([a-zA-Z]+)'/;
+    const errorField = errors.match(regex)[1];
+    if(typeof errorField !== "undefined")
+    {
+        const fieldName = errorField.charAt(0).toLowerCase() + errorField.substr(1);
+        const errorMessage =  "An account with this " + errorField.toLowerCase() + " has already been registered.";
+        return {[fieldName]: errorMessage};
+    }            
+}
+
 export const register = (user) =>
     async dispatch => {
-        dispatch({ type: REGISTER_USER_REQUEST });
-
         try {
             await registerUser(user);
             dispatch({ type: REGISTER_USER_RESPONSE_OK });
             dispatch(push('/login'));
         }
         catch (e) {
-            if (e.response.status === 400) {
-                const errors = e.response.data;
-                dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
-
-                const formErrors = {};
-                Object.values(errors).map(k => formErrors[k.key] = k.message)
-                return Promise.reject(formErrors);
+            const errors = e.response.data;
+            switch(e.response.status){
+                case 400:
+                    dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
+                    const formErrors = {};
+                    Object.values(errors).map(k => formErrors[k.key] = k.message)
+                    return Promise.reject(formErrors);
+                case 409:
+                    dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
+                    return Promise.reject(getConflictErrorMessage(errors));    
             }
         }
     };

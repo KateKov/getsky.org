@@ -24,6 +24,11 @@ git push deploy master
 
 # start updated services
 ssh $RUN_USER@$IP -p $PORT <<EOF
+  export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  export MYSQL_USER=${MYSQL_USER}
+  export MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  export TRADE_MYSQL=${TRADE_MYSQL}
+
   export RECAPTCHA_SECRET=${RECAPTCHA_SECRET}
   export MAIL_USERNAME=${MAIL_USERNAME}
   export MAIL_PASSWORD=${MAIL_PASSWORD}

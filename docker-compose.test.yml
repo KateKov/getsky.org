@@ -8,8 +8,9 @@ services:
     ports: 
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: getskytrade
     volumes:
       - ./mysql_data:/var/lib/mysql
@@ -23,7 +24,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      TRADE_MYSQL: "root:root@(mysql:3306)"
+      TRADE_MYSQL: ${TRADE_MYSQL}
       RECAPTCHA_SECRET: ${RECAPTCHA_SECRET}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
@@ -34,7 +35,7 @@ services:
       - ./db:/usr/local/go/src/github.com/skycoin/getsky.org/db
       - ./src:/usr/local/go/src/github.com/skycoin/getsky.org/src
       - ./vendor:/usr/local/go/src/github.com/skycoin/getsky.org/vendor
-    command: /bin/bash -c 'cd /usr/local/go/src/github.com/skycoin/getsky.org/cmd/trade/ && go run ./trade.go -binding=0.0.0.0:8081 -mysql="root:root@(mysql:3306)" -recaptchaSecret=${RECAPTCHA_SECRET} -mailUsername=${MAIL_USERNAME} -mailPassword=${MAIL_PASSWORD} -feedbackAddress=${FEEDBACK_ADDRESS} -mailHost=${MAIL_HOST}'
+    command: /bin/bash -c 'cd /usr/local/go/src/github.com/skycoin/getsky.org/cmd/trade/ && go run ./trade.go -binding=0.0.0.0:8081 -mysql="${TRADE_MYSQL}" -recaptchaSecret=${RECAPTCHA_SECRET} -mailUsername=${MAIL_USERNAME} -mailPassword=${MAIL_PASSWORD} -feedbackAddress=${FEEDBACK_ADDRESS} -mailHost=${MAIL_HOST}'
   web:
     image: nginx
     restart: always

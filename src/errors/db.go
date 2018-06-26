@@ -6,7 +6,6 @@ import (
 
 // DbDuplicateEntry corresponds to an db error that specifies duplicating of data
 const DbDuplicateEntry = "Error 1062: "
-const duplicateEntryPropertyKey = "for key "
 
 // ErrorType indicates which type has db error
 type ErrorType int

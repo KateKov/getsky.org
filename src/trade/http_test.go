@@ -15,18 +15,11 @@ const dbName = "getskytrade"
 
 var db *sql.DB
 
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
-
 func TestMain(m *testing.M) {
 	// user fallback to local mysql in docker, ENV VARs for testing on Travis
-	user := getEnv("MYSQL_USER", "root")
-	password := getEnv("MYSQL_PASSWORD", "root")
-	host := getEnv("MYSQL_HOST", "0.0.0.0:3306")
+	user := "root"
+	password := "root"
+	host := "0.0.0.0:3306"
 	constr := fmt.Sprintf("%s:%s@(%s)/%s?parseTime=true&multiStatements=true", user, password, host, dbName)
 	db = initDb(constr)
 	ensureTables()

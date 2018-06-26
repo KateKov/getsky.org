@@ -1,8 +1,8 @@
 language: go
 go:
 - 1.9
-install:
-- go get -t ./...
+# install:
+# - go get -t ./...
 # - make install-linters
 services:
 - mysql

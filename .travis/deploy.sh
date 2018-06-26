@@ -33,7 +33,7 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
   export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
   export MYSQL_USER=${MYSQL_USER}
   export MYSQL_PASSWORD=${MYSQL_PASSWORD}
-  export TRADE_MYSQL=${TRADE_MYSQL}
+  export TRADE_MYSQL="${TRADE_MYSQL}"
   cd $DEPLOY_DIR
   sudo service docker restart # restart docker service to prevent "timeout" errors (https://github.com/docker/compose/issues/3633#issuecomment-254194717)
   make run-test-docker

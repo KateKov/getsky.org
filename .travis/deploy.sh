@@ -19,7 +19,7 @@ EOF
 
 # push latest changes to test server's remote repo
 git config --global push.default matching
-git remote add deploy ssh://$PUSH_USER@$IP:$PORT$DEPLOY_DIR
+git remote add deploy ssh://$RUN_USER@$IP:$PORT$DEPLOY_DIR
 git push deploy master
 
 # start updated services

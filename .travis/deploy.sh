@@ -24,17 +24,16 @@ git push deploy master
 
 # start updated services
 ssh $RUN_USER@$IP -p $PORT <<EOF
-  export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  export MYSQL_USER=${MYSQL_USER}
-  export MYSQL_PASSWORD=${MYSQL_PASSWORD}
-  export TRADE_MYSQL=${TRADE_MYSQL}
-
   export RECAPTCHA_SECRET=${RECAPTCHA_SECRET}
   export MAIL_USERNAME=${MAIL_USERNAME}
   export MAIL_PASSWORD=${MAIL_PASSWORD}
   export REACT_APP_RECAPTCHA_KEY=${REACT_APP_RECAPTCHA_KEY}
   export FEEDBACK_ADDRESS=${FEEDBACK_ADDRESS}
   export MAIL_HOST=${MAIL_HOST}
+  export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  export MYSQL_USER=${MYSQL_USER}
+  export MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  export TRADE_MYSQL=${TRADE_MYSQL}
   cd $DEPLOY_DIR
   sudo service docker restart # restart docker service to prevent "timeout" errors (https://github.com/docker/compose/issues/3633#issuecomment-254194717)
   make run-test-docker

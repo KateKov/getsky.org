@@ -39,7 +39,10 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
   sudo service docker restart # restart docker service to prevent "timeout" errors (https://github.com/docker/compose/issues/3633#issuecomment-254194717)
   make run-test-docker
   # run migrations
+  cd ./db
   bash ./migrate.sh "${TRADE_MYSQL_MIGRATIONS}"
+  cd ..
+
 EOF
 
 # ssh-agent -k

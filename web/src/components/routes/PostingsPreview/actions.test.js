@@ -51,7 +51,7 @@ describe('postingsPreview actions', () => {
                 }
             }];
 
-            const store = mockStore({});
+            const store = mockStore({ app: { selectedCurrency: 'USD' } });
             store.dispatch(actions.setAdvertPreview(formStub, extraDataStub));
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -62,6 +62,7 @@ describe('postingsPreview actions', () => {
             const expectedActions = [
                 { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/'], method: 'push' } },
                 { type: '@@redux-form/DESTROY', meta: { form: ['formPostingToBuy'] } },
+                { type: 'CLEAR_FORM_PREVIEW' },
             ];
             const formStub = { id: 1 };
             api.postBuyAdvert = apiStubs.createBuyAdvertOk;
@@ -77,6 +78,7 @@ describe('postingsPreview actions', () => {
             const expectedActions = [
                 { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/'], method: 'push' } },
                 { type: '@@redux-form/DESTROY', meta: { form: ['formPostingToSell'] } },
+                { type: 'CLEAR_FORM_PREVIEW' },
             ];
             const formStub = { id: 1 };
             api.postSellAdvert = apiStubs.createSellAdvertOk;

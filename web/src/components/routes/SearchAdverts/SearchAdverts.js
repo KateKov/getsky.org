@@ -74,7 +74,7 @@ const Badge = styled.span`
     vertical-align: top;
 `;
 
-const mapAdverts = (adverts, prices) => adverts.map(a => ({ ...a, price: prices['USD'] }));
+const mapAdverts = (adverts, prices, selectedCurrency) => adverts.map(a => ({ ...a, price: prices[a.currency], selectedCurrency,  selectedCurrencyPrice: prices[selectedCurrency] }));
 
 class SearchAdverts extends React.Component {
     componentWillMount() {
@@ -117,7 +117,14 @@ class SearchAdverts extends React.Component {
     };
 
     render() {
-        const { countries, states, currencies, location, search: { buyAdverts, sellAdverts, loading }, skyPrices } = this.props;
+        const {
+            countries,
+            states,
+            location,
+            search: { buyAdverts, sellAdverts, loading },
+            skyPrices,
+            selectedCurrency, } = this.props;
+
         return (
             <div>
                 <Helmet><title>{getPageTitle('Search advert')}</title></Helmet>
@@ -130,7 +137,7 @@ class SearchAdverts extends React.Component {
                         <Filters
                             countries={countries}
                             states={states}
-                            currencies={this.prepareCurrencies(currencies)}
+                            currencies={this.prepareCurrencies([])}
                             onChange={this.handleFiltersChange}
                             onSubmit={this.handleSubmit}
                             query={location.search}
@@ -153,7 +160,7 @@ class SearchAdverts extends React.Component {
                                         {sellAdverts.length > 0 && <Badge>{sellAdverts.length}</Badge>}
                                     </Title>
                                     <Table columns={buyAdvertsColumns} rowComponent={AdvertRow}
-                                           rowData={mapAdverts(sellAdverts, skyPrices)}/>
+                                        rowData={mapAdverts(sellAdverts, skyPrices, selectedCurrency)} />
                                 </div>
                                 }
                             </Container>
@@ -162,14 +169,14 @@ class SearchAdverts extends React.Component {
                             <Container flex='1 0 auto' flexDirection="column" pt={9}>
                                 {loading && <Spinner />}
                                 {!loading &&
-                                <div>
-                                    <Title>
-                                        Buyer adverts
+                                    <div>
+                                        <Title>
+                                            Buyer adverts
                                         {buyAdverts.length > 0 && <Badge>{buyAdverts.length}</Badge>}
-                                    </Title>
-                                    <Table columns={sellAdvertsColumns} rowComponent={AdvertRow}
-                                           rowData={mapAdverts(buyAdverts, skyPrices)}/>
-                                </div>
+                                        </Title>
+                                        <Table columns={sellAdvertsColumns} rowComponent={AdvertRow}
+                                            rowData={mapAdverts(buyAdverts, skyPrices, selectedCurrency)} />
+                                    </div>
                                 }
                             </Container>
                         </TabPanel>
@@ -183,10 +190,10 @@ class SearchAdverts extends React.Component {
 
 const mapStateToProps = (state) => ({
     countries: state.app.countries,
-    currencies: state.app.currencies,
     states: state.app.states,
     search: state.search,
     skyPrices: state.app.skyPrices,
+    selectedCurrency: state.app.selectedCurrency,
 });
 
 export default connect(mapStateToProps, ({ searchAdverts, setFilters, clearFilters }))(SearchAdverts);

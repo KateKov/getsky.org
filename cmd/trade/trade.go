@@ -34,13 +34,14 @@ func main() {
 		panic(err.Error())
 	}
 
+	currencies := db.NewCurrenciesStorage(sqlDb)
 	auth := db.NewAuthenticator(sqlDb)
 	storage := db.NewStorage(sqlDb)
 	users := db.NewUsers(sqlDb)
 	geo := db.NewGeo(sqlDb)
 	messages := db.NewMessages(sqlDb)
-	skycoinPrices := skycoinPrice.NewSkycoinPrices()
-	mailer := mail.NewPostfixMailer(*mailHost, *mailUsername, *mailPassword, *feedbackAddress, *mailFromAddress)
+	skycoinPrices := skycoinPrice.NewSkycoinPrices(currencies)
+	mailer := mail.NewPostfixMailer(*mailHost, *mailUsername, *mailPassword, *feedbackAddress, *mailFromAddress, log)
 	skycoinPricesInterface := skycoinPrice.Service(skycoinPrices)
 
 	server := trade.NewHTTPServer(*recaptchaSecret, *bindingFlag, storage, users, auth, log, geo, messages, mailer, &skycoinPricesInterface)

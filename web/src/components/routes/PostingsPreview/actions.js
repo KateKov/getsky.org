@@ -3,6 +3,7 @@ import { postBuyAdvert, postSellAdvert } from 'api/';
 import { SellFormName, BuyFormName } from 'constants/index'
 
 export const SET_FORM_PREVIEW = 'SET_FORM_PREVIEW ';
+export const CLEAR_FORM_PREVIEW = 'CLEAR_FORM_PREVIEW';
 
 export const ADVERT_SELL = 1;
 export const ADVERT_BUY = 2;
@@ -17,14 +18,15 @@ const destroyForm = formName => ({
 });
 
 export const setAdvertPreview = (formPreview, extraData) =>
-    dispatch => {
+    (dispatch, getState) => {
+        const selectedCurrency = getState().app.selectedCurrency;
         const preview = {
             additionalInfo: formPreview.additionalInfo,
             amountFrom: formPreview.cashAmount.from,
             amountTo: formPreview.cashAmount.to === '' ? undefined : formPreview.cashAmount.to,
             city: formPreview.city,
             countryCode: formPreview.countryCode,
-            currency: 'USD',
+            currency: selectedCurrency,
             fixedPrice: formPreview.fixedPrice,
             id: null,
             postalCode: formPreview.postalCode,
@@ -47,6 +49,7 @@ export const createBuyAdvert = (advert) =>
         await postBuyAdvert(advert);
         dispatch(push('/'));
         dispatch(destroyForm(BuyFormName));
+        dispatch({ type: CLEAR_FORM_PREVIEW });
     };
 
 export const createSellAdvert = (advert) =>
@@ -54,4 +57,5 @@ export const createSellAdvert = (advert) =>
         await postSellAdvert(advert);
         dispatch(push('/'));
         dispatch(destroyForm(SellFormName));
+        dispatch({ type: CLEAR_FORM_PREVIEW });
     };

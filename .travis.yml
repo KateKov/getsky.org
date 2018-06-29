@@ -33,5 +33,5 @@ deploy:
   - sh $TRAVIS_BUILD_DIR/.travis/deploy.sh
   skip_cleanup: true
   on:
-    branch: master
+    branch: develop
     repo: skycoin/getsky.org

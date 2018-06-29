@@ -35,11 +35,19 @@ const MicroText = styled(Box) `
     color: ${props => props.theme.colors.grayBlue};
     font-size: ${props => props.theme.fontSizes[1]}px;
     ${textAlign}
+
+    a {
+        color: ${props => props.theme.colors.grayBlue};
+
+        &:hover{
+            text-decoration: underline;
+        }
+    }
 `;
 
 const LinkWrapper = styled(Box).attrs({
     width: [1 / 2, 1 / 3, 'auto']
-})`
+}) `
     padding: ${props => props.theme.space[2]}px 0;
     
     &:nth-child(odd) {
@@ -65,11 +73,11 @@ const LinkWrapper = styled(Box).attrs({
     
 `;
 
-const DonationSection = styled(Box)`
+const DonationSection = styled(Box) `
     background: ${props => props.theme.colors.darkBlue};
 `;
 
-const DonationText = styled(Box)`
+const DonationText = styled(Box) `
     color: ${props => props.theme.colors.grayBlue};
     font-size: ${props => props.theme.fontSizes[1]}px;
     margin: 20px 0;
@@ -92,8 +100,8 @@ export default () => (
                 <Brand />
             </Container>
             <Container justifyContent={'space-between'} alignItems={'center'} flexDirection={['column', 'row']} height={'74px'} >
-                <MicroText order={1} mt={[2, 4]} textAlign={['center', 'left']} width={[1, 1 / 5]}>Have you heard yet? Skycoin is the new Benjamin</MicroText>
-                <Box order={[3, 2]} mt={[4, 0]}  width={[1, 3 / 5]}>
+                <MicroText order={1} mt={[2, 4]} textAlign={['center', 'left']} width={[1, 1 / 5]}><a target="_blank" rel="noopener noreferrer" href="https://www.skycoin.net/">Skycoin</a></MicroText>
+                <Box order={[3, 2]} mt={[4, 0]} width={[1, 3 / 5]}>
                     <SocialLinks />
                 </Box>
                 <MicroText order={[2, 3]} mt={[2, 4]} textAlign={['center', 'right']} width={[1, 1 / 5]}>©2018 BuySky.org. All rights reserved.</MicroText>
@@ -101,7 +109,7 @@ export default () => (
         </Background>
         <DonationSection>
             <Container justifyContent="center">
-                <DonationText>Buysky is fee-free and run entirely on donations. If you feel the team deserves to eat this week buy us lunch! <span role="img" aria-label="wink">&#x1f609;</span></DonationText>
+                <DonationText>Buysky is fee-free and run entirely on donations. If you feel the team deserves to eat this week buy us lunch! <span role="img" aria-label="wink">&#x1f609;</span>4oooDGxvaQtdaSQBPxGRabWTHg6CGS4kvH</DonationText>
             </Container>
         </DonationSection>
     </Box>

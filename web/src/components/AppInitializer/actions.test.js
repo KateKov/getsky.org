@@ -16,7 +16,7 @@ describe('app initializer actions', () => {
             const currency = 'EUR';
             const expectedActions = [
                 { type: actions.SKYCOIN_PRICE_REQUEST },
-                { type: actions.SKYCOIN_PRICE_RESPONSE, currency, price }
+                { type: actions.SKYCOIN_PRICE_RESPONSE, prices:[{ code: "EUR", price: "19.4068220127" }, { code: "UAH", price: "601.275954735" }, { code: "USD", price: "22.9115" }] }
             ];
 
             api.getSkycoinPrice = apiStubs.getSkycoinPriceOk(price);

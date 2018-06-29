@@ -32,11 +32,8 @@ export const getAdvertDetails404 = id => new Promise((resolve, reject) => {
     reject({ response: { status: 404 } });
 });
 
-export const getSkycoinPriceOk = price => currency => new Promise((resolve, reject) => {
-    const currencyFieldName = `price_${currency.toLowerCase()}`;
-    const responseData = {};
-    responseData[currencyFieldName] = price;
-    resolve({ data: [responseData] });
+export const getSkycoinPriceOk = price => () => new Promise((resolve, reject) => {
+    resolve({ data: [{ code: "EUR", price: "19.4068220127" }, { code: "UAH", price: "601.275954735" }, { code: "USD", price: "22.9115" }] });
 });
 
 export const getStatesOk = () => new Promise((resolve, reject) => { resolve({ data: [] }) })
@@ -65,3 +62,23 @@ export const getAdvertsForDashboardOk = (advertsStub) => () => new Promise((reso
 export const deleteAdvertOk = advertId => new Promise((resolve, reject) => resolve({ data: {} }));
 
 export const extendExpirationDateOk = advertId => new Promise((resolve, reject) => resolve({ data: {} }));
+
+export const resetPasswordRequestOk = requestForm => () => new Promise((resolve, reject) => resolve());
+
+export const resetPasswordRequest404 = requestForm => () => new Promise((resolve, reject) => {
+    reject({ response: { status: 404 } })
+});
+
+export const saveNewPasswordOk = requestForm => requestForm => new Promise((resolve, reject) => resolve());
+
+export const saveNewPasswordFail = requestForm => requestForm => new Promise((resolve, reject) =>
+    reject({ response: { status: 404 } })
+);
+
+export const searchAllAdverts = () => new Promise((resolve, reject) => {
+    resolve({ sellAdverts: [], buyAdverts: [] });
+});
+
+export const searchAllAdvertsFail = () => new Promise((resolve, reject) => {
+    reject({ response: { data: 'error' } });
+});

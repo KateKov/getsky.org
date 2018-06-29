@@ -1,6 +1,10 @@
 package mail
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/sirupsen/logrus"
+)
 
 const mime = "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
 
@@ -25,6 +29,8 @@ type MailerInfo struct {
 	from     string
 
 	feedbackAddress string
+
+	log logrus.FieldLogger
 }
 
 func getBody(l *Letter, from string) []byte {

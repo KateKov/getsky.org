@@ -22,10 +22,11 @@ const extractFormValues = (form, names) =>
 
 export default connect(
     ({
-        app: { countries, states, userInfo, },
+        app: { countries, states, userInfo, skyPrices, },
         form: { userLocationSettingsForm, userOtherSettingsForm },
     }) => ({
         userInfo,
+        skyPrices,
 
         countries,
         states,
@@ -107,6 +108,7 @@ export default connect(
 
                     countries,
                     states,
+                    skyPrices,
 
                     userInfo,
                 } = this.props;
@@ -128,6 +130,7 @@ export default connect(
                         <Box mt={'30px'}>
                             <h2>Other settings</h2>
                             <OtherSettings
+                                currencies={Object.keys(skyPrices)}
                                 enableReinitialize
                                 initialValues={userInfo && { ...userInfo, timeOffset: userInfo.timeOffset.toString() }}
                                 onSubmit={this.saveOtherForm}

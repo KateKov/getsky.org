@@ -60,10 +60,10 @@ class LatestAdverts extends React.Component {
     }
 
     render() {
-        const { skyPrices, buyAdverts, sellAdverts, loading } = this.props;
+        const { skyPrices, buyAdverts, sellAdverts, loading, selectedCurrency, } = this.props;
 
-        const sellAdvertsWithPrice = sellAdverts.map(i => ({ ...i, price: skyPrices['USD'] }));
-        const buyAdvertsWithPrice = buyAdverts.map(i => ({ ...i, price: skyPrices['USD'] }));
+        const sellAdvertsWithPrice = sellAdverts.map(i => ({ ...i, price: skyPrices[i.currency], selectedCurrency, selectedCurrencyPrice: skyPrices[selectedCurrency] }));
+        const buyAdvertsWithPrice = buyAdverts.map(i => ({ ...i, price: skyPrices[i.currency], selectedCurrency, selectedCurrencyPrice: skyPrices[selectedCurrency] }));
         return (
             <Box>
                 <Helmet><title>{getPageTitle('Latest adverts')}</title></Helmet>
@@ -96,5 +96,5 @@ class LatestAdverts extends React.Component {
     }
 }
 
-export default connect(({ latestAdverts, app: { skyPrices } }) => ({ ...latestAdverts, skyPrices }),
+export default connect(({ latestAdverts, app: { skyPrices, selectedCurrency, } }) => ({ ...latestAdverts, skyPrices, selectedCurrency }),
     ({ getAdverts }))(LatestAdverts);

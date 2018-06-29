@@ -157,7 +157,7 @@ func (s *HTTPServer) setupRouter(Secure Secure) http.Handler {
 	r.Handle("/api/postings/{id}/messages-authors", Secure(API(GetMessageAuthorsHandler))).Methods("GET")
 	r.Handle("/api/postings/{id}/messages/{authorName}", Secure(API(GetMessagesHandler))).Methods("GET")
 
-	r.Handle("/api/skycoin-price/{currency}", API(GetSkycoinPrice)).Methods("GET")
+	r.Handle("/api/skycoin-price", API(GetSkycoinPrice)).Methods("GET")
 	r.Handle("/api/status", API(StatusHandler)).Methods("GET")
 
 	// TODO: enable CORS

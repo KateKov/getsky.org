@@ -144,7 +144,9 @@ func RegisterHandler(s *HTTPServer) httputil.APIHandler {
 			Subject: "Welcome to Buysky.org",
 			To:      req.Email,
 		})
-		s.log.Println(err)
+		if err != nil {
+			s.log.Errorln("users.RegisterHandler > s.mailer.SendMail > to:", req.Email, " ", err)
+		}
 		return nil
 	}
 }
@@ -320,6 +322,9 @@ func ResetPasswordRequestHandler(s *HTTPServer) httputil.APIHandler {
 			Subject: "BuySky Password Recovery",
 			Body:    `To set a new password please follow this <a href='` + linkHref + `'>link</a>`,
 		})
+		if err != nil {
+			s.log.Errorln("users.ResetPasswordRequestHandler > s.mailer.SendMail > to:", body.Email, " ", err)
+		}
 
 		return err
 	}

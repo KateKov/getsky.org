@@ -62,10 +62,9 @@ describe('app initializer reducer', () => {
 
     describe('SKYCOIN_PRICE_RESPONSE', () => {
         it('should save received price to the reducer\'s state', () => {
-            const priceStub = 123;
-            const currencyStub = 'EUR';
-            const expectedState = { ...initialState, skyPrices: { EUR: priceStub } };
-            expect(reduce(initialState, { type: actions.SKYCOIN_PRICE_RESPONSE, currency: currencyStub, price: priceStub }))
+            const pricesStub =  [{ code: "EUR", price: "19.4068220127" }];
+            const expectedState = { ...initialState, skyPrices: { EUR: pricesStub[0].price } };
+            expect(reduce(initialState, { type: actions.SKYCOIN_PRICE_RESPONSE, prices: pricesStub }))
                 .toEqual(expectedState);
         });
     });

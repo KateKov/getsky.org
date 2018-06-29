@@ -3,8 +3,9 @@ import { Flex, Box } from 'grid-styled';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
+import get from 'lodash/get';
 
-import { getPageTitle } from 'utils';
+import { getPageTitle, round } from 'utils';
 import media from 'media';
 import theme from 'components/theme';
 import Container from 'components/layout/Container';
@@ -80,8 +81,34 @@ const advertValueToString = (amountFrom, amountTo, price = 1) => {
     if (!amountTo) {
         return amountFrom.times(price).toString();
     }
+    
+    return `${get(amountFrom, 'times(price).toString()', amountFrom)} to ${get(amountTo, 'times(price).toString()', amountTo)}`;
+};
 
-    return `${amountFrom.times(price).toString()} to ${amountTo.times(price).toString()}`;
+const getAdvertPrice = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment) => {
+    let price = 1;
+    if (currency === selectedCurrency) {
+        if (fixedPrice) {
+            price = Number.parseFloat(fixedPrice);
+        } else {
+            price = Number.parseFloat(advertPrice) + (Number.parseFloat(advertPrice) * Number.parseFloat(percentageAdjustment) / 100);
+        }
+    } else {
+        const exchangeRate = Number.parseFloat(selectedCurrencyPrice) / Number.parseFloat(advertPrice);
+        if (fixedPrice) {
+            price = Number.parseFloat(fixedPrice) * exchangeRate;
+        } else {
+            price = Number.parseFloat(selectedCurrencyPrice) + ((Number.parseFloat(advertPrice) * Number.parseFloat(percentageAdjustment) / 100) * exchangeRate);
+        }
+    }
+
+    return round(price, 2);
+}
+
+const convertedAdvertValue = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment, amountFrom, amountTo) => {
+    const price = getAdvertPrice(currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment);
+    
+    return `${amountFrom * price} ${amountTo ? `- ${amountTo * price}` : ''}`;
 };
 
 const TradeOptionsList = styled.ul`
@@ -142,7 +169,7 @@ const Country = styled.p`
     font-weight: 300;
 `;
 
-export const AdvertSummary = ({ details, countries, states, skyPrices }) => (
+export const AdvertSummary = ({ details, countries, states, skyPrices, selectedCurrency }) => (
     <Flex flexDirection="row" flexWrap="wrap">
         <PanelBody>
             <Flex flexDirection="row" flexWrap="wrap">
@@ -157,11 +184,11 @@ export const AdvertSummary = ({ details, countries, states, skyPrices }) => (
                 </SummaryPosition>
                 <SummaryPosition
                     name="Which is approximately:">
-                    <Focused> {advertValueToString(details.amountFrom, details.amountTo, details.fixedPrice || skyPrices[details.currency])} {details.currency}</Focused>
+                    <Focused> {convertedAdvertValue(details.currency, selectedCurrency, details.fixedPrice, skyPrices[details.currency], skyPrices[selectedCurrency], details.percentageAdjustment, details.amountFrom, details.amountTo)} {selectedCurrency}</Focused>
                 </SummaryPosition>
                 <SummaryPosition
                     name="Price per SKY:">
-                    <Focused> {details.fixedPrice || skyPrices[details.currency]} {details.currency}</Focused>
+                    <Focused> {getAdvertPrice(details.currency, selectedCurrency, details.fixedPrice, skyPrices[details.currency], skyPrices[selectedCurrency], details.percentageAdjustment)} {selectedCurrency}</Focused>
                 </SummaryPosition>
                 <SummaryPosition
                     name="Trade options:">
@@ -231,6 +258,7 @@ export default connect(
                         <AdvertSummary
                             details={advertDetails}
                             skyPrices={app.skyPrices}
+                            selectedCurrency={app.selectedCurrency}
                             countries={app.countries}
                             states={app.states} />
                     </Box>

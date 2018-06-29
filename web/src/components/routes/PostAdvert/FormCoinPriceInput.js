@@ -47,9 +47,9 @@ const FixedPriceTip = () => (
     </Box>
 );
 
-const Label = ({ skyPrice }) => (
+const Label = ({ skyPrice, selectedCurrency }) => (
     <Span>
-        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} USD)
+        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} {selectedCurrency})
     </Span>
 );
 
@@ -66,12 +66,12 @@ class FormCoinPriceInput extends React.Component {
         onChange({ value: newValue, type: value.type });
     }
     render() {
-        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices } = this.props;
+        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices, selectedCurrency } = this.props;
         const showError = !!(touched && (error || warning));
-        const skyPrice = skyPrices['USD'];
+        const skyPrice = skyPrices[selectedCurrency];
 
         return (
-            <FormItem name={name} label={<Label skyPrice={skyPrice} />} isRequired={isRequired} showError={showError} error={error}>
+            <FormItem name={name} label={<Label skyPrice={skyPrice} selectedCurrency={selectedCurrency} />} isRequired={isRequired} showError={showError} error={error}>
                 <Flex mt={3}>
                     <Button type="button" text='PERCENTAGE ADJUSTMENT' onClick={() => this.setMode(PriceType.PERCENT)} style={fullWidth} primary={value.type === PriceType.PERCENT} />
                     <Button type="button" text='FIXED PRICE' onClick={() => this.setMode(PriceType.FIXED)} style={fullWidth} primary={value.type === PriceType.FIXED} />
@@ -81,7 +81,7 @@ class FormCoinPriceInput extends React.Component {
                         <ControlInput type="number" placeholder={'percentage adjustment, e.g. 5'} error={showError} min={0} max={100} step={0.01} value={value.value} onChange={this.onChange} />
                     }
                     {value.type === PriceType.FIXED &&
-                        <ControlInput type="number" placeholder={'USD'} error={showError} value={value.value} step={0.01} onChange={this.onChange} />
+                        <ControlInput type="number" placeholder={selectedCurrency} error={showError} value={value.value} step={0.01} onChange={this.onChange} />
                     }
                 </Flex>
                 <Box mt={3}>

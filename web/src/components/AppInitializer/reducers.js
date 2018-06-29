@@ -3,6 +3,7 @@ import {
     GET_STATES_RESPONSE,
     GET_USER_INFO_RESPONSE,
     SKYCOIN_PRICE_RESPONSE,
+    CHANGE_SELECTED_CURRENCY,
 } from './actions';
 
 import { LOGOUT_USER } from 'components/routes/Login/actions';
@@ -12,14 +13,16 @@ export const initialState = {
     states: [],
     userInfo: null,
     skyPrices: {},
-    currencies: ['USD'] //, 'EUR'],
+    selectedCurrency: 'USD',
 };
 
-const saveSkycoinPrice = (prices, currency, price) => {
+const saveSkycoinPrices = (prices) => {
     const mutation = {};
-    mutation[currency] = price;
+    prices.forEach(v => {
+        mutation[v.code] = v.price;
+    })
 
-    return { ...prices, ...mutation };
+    return mutation;
 }
 
 export default (state = initialState, action) => {
@@ -29,9 +32,11 @@ export default (state = initialState, action) => {
         case GET_STATES_RESPONSE:
             return { ...state, states: action.states.map(s => ({ text: s.name, value: s.code })) };
         case GET_USER_INFO_RESPONSE:
-            return { ...state, userInfo: action.userInfo };
+            return { ...state, userInfo: action.userInfo, selectedCurrency: action.userInfo.currency || 'USD' };
         case SKYCOIN_PRICE_RESPONSE:
-            return { ...state, skyPrices: saveSkycoinPrice(state.skyPrices, action.currency, action.price) };
+            return { ...state, skyPrices: saveSkycoinPrices(action.prices) };
+        case CHANGE_SELECTED_CURRENCY:
+            return { ...state, selectedCurrency: action.currency };
         case LOGOUT_USER:
             return { ...state, userInfo: null };
         default:

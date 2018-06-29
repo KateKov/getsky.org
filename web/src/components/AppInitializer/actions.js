@@ -57,15 +57,17 @@ export const getUserInfo = () => async dispatch => {
 export const SKYCOIN_PRICE_REQUEST = 'SKYCOIN_PRICE_REQUEST';
 export const SKYCOIN_PRICE_RESPONSE = 'SKYCOIN_PRICE_RESPONSE';
 
-export const requestSkycoinPrice = currency =>
+export const requestSkycoinPrice = () =>
     async dispatch => {
         try {
             dispatch({ type: SKYCOIN_PRICE_REQUEST });
-            const currencyFieldName = `price_${currency.toLowerCase()}`;
 
-            const response = await getSkycoinPriceApi(currency);
-            dispatch({ type: SKYCOIN_PRICE_RESPONSE, currency, price: response.data[0][currencyFieldName] });
+            const response = await getSkycoinPriceApi();
+            dispatch({ type: SKYCOIN_PRICE_RESPONSE, prices: response.data });
         } catch (e) {
             console.log(e.message);
         }
     };
+
+export const CHANGE_SELECTED_CURRENCY = 'CHANGE_SELECTED_CURRENCY';
+export const changeSelectedCurrency = currency => ({ type: CHANGE_SELECTED_CURRENCY, currency });

@@ -14,6 +14,7 @@ import Icon, { IconMap } from 'components/layout/Icon';
 import { NewMessageCount } from 'components/layout/Badge';
 import { TableRow, TableCell } from 'components/layout/Table';
 import { TRADE_OPTIONS } from 'constants/index';
+import { round } from 'utils';
 
 import DropdownActions from './DropdownActions';
 
@@ -58,7 +59,25 @@ const getFullAddress = advert => `${advert.countryCode}, ${advert.city} ${advert
 
 const getPrice = advert => `${advert.amountFrom} ${advert.amountTo ? `- ${advert.amountTo}` : ''} SKY`;
 
-const getConvertedPrice = advert => `${advert.amountFrom * (advert.fixedPrice || advert.price)} ${advert.amountTo ? `- ${advert.amountTo * (advert.fixedPrice || advert.price)}` : ''} USD`;
+const getConvertedPrice = advert => {
+    let price = 1;
+    if (advert.currency === advert.selectedCurrency) {
+        if (advert.fixedPrice) {
+            price = Number.parseFloat(advert.fixedPrice);
+        } else {
+            price = Number.parseFloat(advert.price) + (Number.parseFloat(advert.price) * Number.parseFloat(advert.percentageAdjustment) / 100);
+        }
+    } else {
+        const exchangeRate = Number.parseFloat(advert.selectedCurrencyPrice) / Number.parseFloat(advert.price);
+        if (advert.fixedPrice) {
+            price = Number.parseFloat(advert.fixedPrice) * exchangeRate;
+        } else {
+            price = Number.parseFloat(advert.selectedCurrencyPrice) + ((Number.parseFloat(advert.price) * Number.parseFloat(advert.percentageAdjustment) / 100) * exchangeRate);
+        }
+    }
+    price = round(price, 2);
+    return `${advert.amountFrom * price} ${advert.amountTo ? `- ${advert.amountTo * price}` : ''} ${advert.selectedCurrency}`;
+};
 
 const getTradeOptionsText = advert => {
     const advertOptions = pickBy(pick(advert, keys(TRADE_OPTIONS)), item => item);

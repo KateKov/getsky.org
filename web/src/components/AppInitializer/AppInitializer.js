@@ -8,7 +8,7 @@ class AppInitializer extends React.Component {
         this.props.getCountries();
         this.props.getStates();
         this.props.getUserInfo();
-        this.props.app.currencies.forEach(c => this.props.requestSkycoinPrice(c));
+        this.props.requestSkycoinPrice();
     }
 
     render() {

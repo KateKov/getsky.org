@@ -9,10 +9,6 @@ const distanceUnits = [
     { text: 'Kilometers', value: 'km' },
     { text: 'Miles', value: 'ml' }
 ];
-const currencies = [
-    { text: 'EUR', value: 'EUR' },
-    { text: 'USD', value: 'USD' }
-];
 
 export default reduxForm({ form: 'userOtherSettingsForm' })(
     class extends React.Component {
@@ -22,7 +18,10 @@ export default reduxForm({ form: 'userOtherSettingsForm' })(
                 pristine,
                 submitting,
                 showSuccessMessage,
+                currencies,
             } = this.props;
+
+            const cs = currencies.map(c => ({ text: c, value: c }));
 
             return (
                 <Form onSubmit={handleSubmit}>
@@ -46,7 +45,7 @@ export default reduxForm({ form: 'userOtherSettingsForm' })(
                         <Field
                             name="currency"
                             component={FormDropdown}
-                            options={currencies}
+                            options={cs}
                             label="Currency" />
 
                         <Submit disabled={pristine || submitting} showSpinner={submitting} text="Save" primary />

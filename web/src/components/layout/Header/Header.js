@@ -11,15 +11,16 @@ import UserSubmenu from 'components/layout/UserSubmenu';
 import SkyPrice from 'components/layout/SkyPrice';
 import theme from 'components/theme';
 import { logout } from 'components/routes/Login/actions';
+import { changeSelectedCurrency } from 'components/AppInitializer/actions';
 
 import Navigation from './Navigation';
 
-const SubHeaderWrapper = styled(Flex) `
+const SubHeaderWrapper = styled(Flex)`
     background: ${props => props.theme.colors.darkBlue};
     height: 38px;
 `;
 
-const HeaderWrapper = styled(Flex) `
+const HeaderWrapper = styled(Flex)`
     height: 102px;
 `;
 
@@ -42,11 +43,11 @@ const authNavItems = [
 const HomePageStyle = { position: 'absolute', width: '100%' };
 const OtherPagesStyle = { backgroundColor: theme.colors.black };
 
-const Header = ({ authorized, userInfo, skyPrices, currencies, location, logout, push }) => (
+const Header = ({ authorized, userInfo, skyPrices, selectedCurrency, location, logout, push, changeSelectedCurrency }) => (
     <header style={{ overflow: 'hidden' }}>
         <SubHeaderWrapper>
             <Container alignItems={'center'} justifyContent={'space-between'}>
-                <SkyPrice skyPrices={skyPrices} />
+                <SkyPrice skyPrices={skyPrices} selectedCurrency={selectedCurrency} changeSelectedCurrency={changeSelectedCurrency} />
                 {authorized && <UserSubmenu push={push} userInfo={userInfo} logout={logout} />}
             </Container>
         </SubHeaderWrapper>
@@ -69,8 +70,9 @@ const mapStateToProps = ({ login, app, routing }) => {
         authorized: login.authorized,
         userInfo: app.userInfo,
         skyPrices: app.skyPrices,
+        selectedCurrency: app.selectedCurrency,
         currencies: app.currencies,
     }
 };
 
-export default connect(mapStateToProps, { logout, push })(Header);
+export default connect(mapStateToProps, { logout, push, changeSelectedCurrency, })(Header);

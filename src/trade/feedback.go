@@ -50,6 +50,11 @@ func FeedbackHandler(s *HTTPServer) httputil.APIHandler {
 			Subject: "BUYSKY >> " + body.Subject,
 			Body:    message,
 		})
+
+		if err != nil {
+			s.log.Errorln("feedback.FeedbackHandler > s.mailer.SendFeedback ", err)
+		}
+
 		return err
 	}
 }

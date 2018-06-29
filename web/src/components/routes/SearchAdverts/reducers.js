@@ -1,23 +1,36 @@
-import { SEARCH_ADVERTS_REQUEST, SEARCH_ADVERTS_RESPONSE, SET_FILTERS, CLEAR_FILTERS } from './actions';
+import {
+    LOAD_SEARCH_ADVERTS,
+    SEARCH_ADVERTS_SUCCESS,
+    SEARCH_ADVERTS_FAILED,
+    SET_FILTERS,
+    CLEAR_FILTERS
+} from './actions';
 
 export const initialState = {
     loading: true,
     buyAdverts: [],
     sellAdverts: [],
     filters: {},
+    error: null,
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SEARCH_ADVERTS_REQUEST:
+        case LOAD_SEARCH_ADVERTS:
             return {
                 ...state,
                 loading: true,
             };
-        case SEARCH_ADVERTS_RESPONSE:
+        case SEARCH_ADVERTS_SUCCESS:
             return {
                 ...state,
                 ...action.allAdverts,
+                loading: false,
+            };
+        case SEARCH_ADVERTS_FAILED:
+            return {
+                ...state,
+                error: action.error,
                 loading: false,
             };
         case SET_FILTERS:

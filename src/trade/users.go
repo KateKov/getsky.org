@@ -122,9 +122,9 @@ func RegisterHandler(s *HTTPServer) httputil.APIHandler {
 		err = s.users.Register(user, req.Password)
 		if err != nil {
 			if ce.IsDbValidationError(err) {
-				return httputil.StatusError{
-					Err:  err,
-					Code: http.StatusConflict,
+				return ce.DbErrorResponse{
+					Err:   "duplicate",
+					Field: ce.FindErrorField(err),
 				}
 			}
 

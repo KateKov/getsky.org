@@ -7,19 +7,17 @@ export const REGISTER_USER_RESPONSE_OK = 'REGISTER_USER_RESPONSE_OK';
 export const REGISTER_USER_RESPONSE_ERROR = 'REGISTER_USER_RESPONSE_ERROR';
 
 export const getConflictErrorMessage = (errors) => {
-    const regex = /for key '([a-zA-Z]+)'/;
-    const errorField = errors.match(regex)[1];
-    if(typeof errorField !== "undefined")
+    const fieldName =  errors['field'];
+    if(typeof fieldName !== "undefined")
     {
-        const fieldName = errorField.charAt(0).toLowerCase() + errorField.substr(1);
-        const errorMessage =  "An account with this " + errorField.toLowerCase() + " has already been registered.";
+        const errorMessage =  "An account with this " + fieldName.toLowerCase() + " has already been registered.";
         return {[fieldName]: errorMessage};
     }            
 }
 
 export const register = (user) =>
     async dispatch => {
-		dispatch({ type: REGISTER_USER_REQUEST });
+        dispatch({ type: REGISTER_USER_REQUEST });
         try {
             await registerUser(user);
             dispatch({ type: REGISTER_USER_RESPONSE_OK });

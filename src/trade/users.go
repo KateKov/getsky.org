@@ -123,8 +123,8 @@ func RegisterHandler(s *HTTPServer) httputil.APIHandler {
 		if err != nil {
 			if ce.IsDbValidationError(err) {
 				return ce.DbErrorResponse{
-					Err:   "duplicate",
-					Field: ce.FindErrorField(err),
+					Err: "duplicate",
+					Key: ce.FindDuplicateKey(err),
 				}
 			}
 

@@ -27,7 +27,8 @@ func IsDbValidationError(err error) bool {
 	return strings.HasPrefix(err.Error(), DbDuplicateEntry)
 }
 
-// FindDuplicateKey finds the duplicate key
+// FindDuplicateKey takes DB error message as input and returns the name of the DB column with key constraint that was violated.
+// E.g. "Error 1062: Duplicate entry 'bob@bob.com' for key 'Email'" -> "email"
 func FindDuplicateKey(err error) string {
 	re := regexp.MustCompile(DuplicateRegex)
 	groups := re.FindStringSubmatch(err.Error())

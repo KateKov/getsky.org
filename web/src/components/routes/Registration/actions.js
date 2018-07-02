@@ -6,15 +6,6 @@ export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_RESPONSE_OK = 'REGISTER_USER_RESPONSE_OK';
 export const REGISTER_USER_RESPONSE_ERROR = 'REGISTER_USER_RESPONSE_ERROR';
 
-export const getConflictErrorMessage = (errors) => {
-    const fieldName =  errors['field'];
-    if(typeof fieldName !== "undefined")
-    {
-        const errorMessage =  "An account with this " + fieldName.toLowerCase() + " has already been registered.";
-        return {[fieldName]: errorMessage};
-    }            
-}
-
 export const register = (user) =>
     async dispatch => {
         dispatch({ type: REGISTER_USER_REQUEST });
@@ -33,7 +24,7 @@ export const register = (user) =>
                     return Promise.reject(formErrors);
                 case 409:
                     dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
-                    return Promise.reject(getConflictErrorMessage(errors));    
+                    return Promise.reject(errors);    
             }
         }
     };

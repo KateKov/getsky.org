@@ -12,6 +12,7 @@ type DbErrorResponse struct {
 	Field string `json:"field"`
 }
 
+// DuplicateRegex is regex for searching the field name
 const DuplicateRegex = `for key '([a-zA-Z]+)'`
 
 // DbDuplicateEntry corresponds to an db error that specifies duplicating of data
@@ -26,7 +27,7 @@ func IsDbValidationError(err error) bool {
 	return strings.HasPrefix(err.Error(), DbDuplicateEntry)
 }
 
-// FindField finds the field with error
+// FindErrorField finds the field with error
 func FindErrorField(err error) string {
 	re := regexp.MustCompile(DuplicateRegex)
 	groups := re.FindStringSubmatch(err.Error())

@@ -15,6 +15,7 @@ import { required } from 'validation/rules';
 import { resetPassword } from './actions';
 
 const r = required();
+const emailRequired = (value) => value === 0 || value ? undefined : "Email field can't be blank";
 
 const ForgotPasswordForm = reduxForm({
     form: 'forgotPasswordForm',
@@ -36,7 +37,7 @@ const ForgotPasswordForm = reduxForm({
         return (
             <Form onSubmit={handleSubmit}>
                 <Box width={[1, 1, 1 / 2]}>
-                    <Field name="email" component={FormInput} type="email" label="Email" placeholder="Email" />
+                    <Field name="email"  validate={[emailRequired]} component={FormInput} type="email" label="Email" placeholder="Email" isRequired />
                     <Field name="recaptcha" component={FormCaptcha} validate={[r]} withRef ref={r => { this.recaptchaField = r }} isRequired />
                 </Box>
 

@@ -439,12 +439,13 @@ func (s Storage) SearchAdverts(f models.SearchAdvertsFilter, t board.AdvertType,
 		`INNER JOIN Users u ON a.Author = u.Id ` +
 		`WHERE ` +
 		`a.Type = ` + typeString + ` AND a.ExpiredAt > "` + timeString + `" AND a.IsDeleted = 0 ` +
-		`AND (:TradeCashInPerson = 0 OR a.TradeCashInPerson = :TradeCashInPerson) ` +
-		`AND (:TradeCashByMail = 0 OR a.TradeCashByMail = :TradeCashByMail) ` +
-		`AND (:TradeMoneyOrderByMail = 0 OR a.TradeMoneyOrderByMail = :TradeMoneyOrderByMail) ` +
-		`AND (:TradeOther = 0 OR a.TradeOther = :TradeOther) ` +
+		`AND ( (:TradeCashInPerson = 0 AND :TradeCashByMail = 0 AND :TradeMoneyOrderByMail = 0 AND :TradeOther = 0)` +
+		`OR (:TradeCashInPerson != 0 AND a.TradeCashInPerson = :TradeCashInPerson) ` +
+		`OR (:TradeCashByMail != 0 AND a.TradeCashByMail = :TradeCashByMail) ` +
+		`OR (:TradeMoneyOrderByMail != 0 AND a.TradeMoneyOrderByMail = :TradeMoneyOrderByMail) ` +
+		`OR (:TradeOther != 0 AND a.TradeOther = :TradeOther)) ` +
 		`AND (:CountryCode = "" OR a.CountryCode = :CountryCode) ` +
-		`AND (:StateCode = 0 OR a.StateCode = :StateCode) ` +
+		`AND (:StateCode = "" OR a.StateCode = :StateCode) ` +
 		`AND (:City = "" OR LOWER(a.City) LIKE :City) ` +
 		`AND (:Amount = 0 OR a.AmountFrom = :Amount OR :Amount BETWEEN a.AmountFrom AND a.AmountTo) ` +
 		`AND (:Currency = "" OR a.Currency = :Currency) ` +

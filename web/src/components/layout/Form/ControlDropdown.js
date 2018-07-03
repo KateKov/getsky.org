@@ -46,9 +46,9 @@ const Select = styled.select`
 `;
 
 const ControlDropdown = ({ name, options, onChange, error, input, disabled, bg, color }) =>
-    <SelectWrapper>
-        <Select name={name} value={input && input.value} onChange={onChange} error={error} disabled={disabled} bg={bg} color={color}>
-            <option value="" disabled>Select</option>
+      <SelectWrapper>
+        <Select name={name} value={input ? input.value : ""} onChange={onChange} error={error} disabled={disabled} bg={bg} color={color}>
+            <option value="">Select</option>
             {options.map((item, i) => <option value={item.value} key={i}>{item.text}</option>)}
         </Select>
     </SelectWrapper>;

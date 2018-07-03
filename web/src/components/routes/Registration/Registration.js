@@ -17,6 +17,13 @@ class Registration extends React.Component {
 
         return registerUser(user)
             .catch(err => {
+                if(err['error'] && err['field'] && err['error'] === 'duplicate')
+                {
+                    const fieldName =  err['field'];
+                    const errorMessage =  "An account with this " + fieldName.toLowerCase() + " has already been registered.";
+                    throw new SubmissionError({[fieldName]: errorMessage});
+                }
+  
                 throw new SubmissionError(err)
             });
     }

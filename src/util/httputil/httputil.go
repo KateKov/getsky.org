@@ -52,6 +52,14 @@ func ErrorHandler(log logrus.FieldLogger, h APIHandler) http.HandlerFunc {
 				if err != nil {
 					http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 				}
+			case errors.DbErrorResponse:
+				log.Errorf("%s: HTTP 409 - %s", r.URL, e.Error())
+				w.WriteHeader(http.StatusConflict)
+				err := json.NewEncoder(w).Encode(e)
+
+				if err != nil {
+					http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				}
 			default:
 				log.Errorf("Error in handler %s - %s", r.URL, err)
 				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

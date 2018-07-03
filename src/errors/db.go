@@ -2,37 +2,41 @@ package errors
 
 import (
 	"bytes"
+	"regexp"
 	"strings"
 )
 
+// DbErrorResponse is entity that contains error name and its key name
+type DbErrorResponse struct {
+	Err string `json:"error"`
+	Key string `json:"field"`
+}
+
+// DuplicateRegex is regex for searching the key name
+const DuplicateRegex = `for key '([a-zA-Z]+)'`
+
 // DbDuplicateEntry corresponds to an db error that specifies duplicating of data
 const DbDuplicateEntry = "Error 1062: "
-const duplicateEntryPropertyKey = "for key "
+
+func (e DbErrorResponse) Error() string {
+	return e.Err
+}
 
 // IsDbValidationError checks if the error is db validation error
 func IsDbValidationError(err error) bool {
 	return strings.HasPrefix(err.Error(), DbDuplicateEntry)
 }
 
-// DatabaseErrorResponse parses database error string to user friendly error
-func DatabaseErrorResponse(err error) ValidationError {
-	errorResponse := make([]ValidationErrorResponse, 0)
-
-	if !IsDbValidationError(err) {
-		return ValidationError{Errors: errorResponse}
+// FindDuplicateKey takes DB error message as input and returns the name of the DB column with key constraint that was violated.
+// E.g. "Error 1062: Duplicate entry 'bob@bob.com' for key 'Email'" -> "email"
+func FindDuplicateKey(err error) string {
+	re := regexp.MustCompile(DuplicateRegex)
+	groups := re.FindStringSubmatch(err.Error())
+	if len(groups) >= 1 {
+		return makeFirstLowerCase(groups[1])
 	}
 
-	if strings.HasPrefix(err.Error(), DbDuplicateEntry) {
-		message := strings.TrimSuffix(err.Error(), DbDuplicateEntry)
-		key := strings.Replace(strings.Split(message, duplicateEntryPropertyKey)[1], "'", "", -1)
-
-		errorResponse = append(errorResponse, ValidationErrorResponse{
-			Key:     makeFirstLowerCase(key),
-			Message: "It already exists in a database.",
-		})
-	}
-
-	return ValidationError{Errors: errorResponse}
+	return ""
 }
 
 func makeFirstLowerCase(s string) string {

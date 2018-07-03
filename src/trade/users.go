@@ -122,7 +122,10 @@ func RegisterHandler(s *HTTPServer) httputil.APIHandler {
 		err = s.users.Register(user, req.Password)
 		if err != nil {
 			if ce.IsDbValidationError(err) {
-				return ce.DatabaseErrorResponse(err)
+				return ce.DbErrorResponse{
+					Err: "duplicate",
+					Key: ce.FindDuplicateKey(err),
+				}
 			}
 
 			return httputil.StatusError{

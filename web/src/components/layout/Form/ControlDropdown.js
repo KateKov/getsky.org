@@ -45,11 +45,20 @@ const Select = styled.select`
     }
 `;
 
+
+const sortOptions = (a,b) => {
+    if (a.text < b.text)
+        return -1;
+    if (a.text > b.text)
+        return 1;
+    return 0;
+}
+
 const ControlDropdown = ({ name, options, onChange, error, input, disabled, bg, color }) =>
-      <SelectWrapper>
+    <SelectWrapper>
         <Select name={name} value={input ? input.value : ""} onChange={onChange} error={error} disabled={disabled} bg={bg} color={color}>
             <option value="">Select</option>
-            {options.map((item, i) => <option value={item.value} key={i}>{item.text}</option>)}
+            {options.sort(sortOptions).map((item, i) => <option value={item.value} key={i}>{item.text}</option>)}
         </Select>
     </SelectWrapper>;
 

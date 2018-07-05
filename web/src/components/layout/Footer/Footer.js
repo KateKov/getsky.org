@@ -85,6 +85,13 @@ const DonationText = styled(Box) `
     line-height: 20px;
 `;
 
+const DonationAddress = styled.span`
+    display: block;
+    overflow: auto;
+    word-break: break-all;
+    word-wrap: break-word;
+`;
+
 export default () => (
     <Box mt={[10, 12, 14]}>
         <Promo />
@@ -109,7 +116,7 @@ export default () => (
         </Background>
         <DonationSection>
             <Container justifyContent="center">
-                <DonationText>Buysky is fee-free and run entirely on donations. If you feel the team deserves to eat this week buy us lunch! <span role="img" aria-label="wink">&#x1f609;</span>4oooDGxvaQtdaSQBPxGRabWTHg6CGS4kvH</DonationText>
+                <DonationText>Buysky is fee-free and run entirely on donations. If you feel the team deserves to eat this week buy us lunch! <span role="img" aria-label="wink">&#x1f609;</span><DonationAddress>8TCzRjS79fyv5jgbrN9JC5WTwBacPYXcYE</DonationAddress></DonationText>
             </Container>
         </DonationSection>
     </Box>

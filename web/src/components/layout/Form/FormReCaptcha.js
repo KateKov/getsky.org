@@ -9,6 +9,8 @@ import { RE_CAPTCHA_KEY } from '../../../constants';
 class ReCaptcha extends React.Component {
     resetRecaptcha() {
         this.reCaptcha.reset();
+		const { input: {onChange }} = this.props;
+        onChange('');
     }
 
     render() {

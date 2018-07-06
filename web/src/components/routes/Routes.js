@@ -7,7 +7,8 @@ import LatestAdverts from './LatestAdverts';
 import SearchAdverts from './SearchAdverts';
 import Registration from './Registration';
 import Login from './Login';
-import PostAdvert from './PostAdvert';
+import PostAdvertBuy from './PostAdvertBuy';
+import PostAdvertSell from './PostAdvertSell';
 import PostingsPreview from './PostingsPreview';
 import AdvertDetails from './AdvertDetails';
 import UserSettings from './UserSettings';
@@ -25,6 +26,7 @@ import {
     FAQ,
     WhySkycoin,
 } from './Content';
+
 
 const OnlyNotAuthorizedRoute = connect(({ login }) => ({
     login
@@ -70,10 +72,9 @@ const Routes = ({ match }) => {
 
             <PrivateRoute path={`/dashboard`} component={Dashboard} />
             <PrivateRoute path={`/user-settings`} component={UserSettings} />
-            <PrivateRoute path={`/postings/buy/preview`} component={PostingsPreview} />
-            <PrivateRoute path={`/postings/sell/preview`} component={PostingsPreview} />
-            <PrivateRoute path={`/postings/sell`} component={PostAdvert} />
-            <PrivateRoute path={`/postings/buy`} component={PostAdvert} />
+            <PrivateRoute path={`/postings/:type(sell|buy)/preview`}  component={PostingsPreview} />
+             <PrivateRoute path={`/postings/buy`} component={PostAdvertBuy} />
+             <PrivateRoute path={`/postings/sell`} component={PostAdvertSell} />
             <PrivateRoute path={`/edit-post/:id`} component={EditPosting} />
 
             <Route path={`/`} component={LatestAdverts} />

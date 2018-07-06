@@ -65,3 +65,18 @@ Then access API at `localhost:3000/api` where 3000 is default gin proxy port
 - Check logs: ```cat /var/log/mail.log```
 - Delete all messages from queue: ```postsuper -d ALL```
 - Check queue with mails: ```mailq```
+
+
+
+## Health Check API
+URL: /api/status
+
+Response:
+```
+{"dbStatus":"OK","coinMarketCapStatus":"OK. Last updated at 2018-07-06 12:59:28.719496435 +0000 UTC m=+97931.216830293"}
+```
+
+Error response:
+```
+{"dbStatus":"error_text","coinMarketCapStatus":"OK. Last updated at 2018-07-06 12:59:28.719496435 +0000 UTC m=+97931.216830293"}
+```

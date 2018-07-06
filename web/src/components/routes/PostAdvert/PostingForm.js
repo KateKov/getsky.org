@@ -92,5 +92,5 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
 }
 
 export default connect(({ form, preview }) => ({ theForm: form.postAdvert, preview }))(
-    reduxForm({ form: 'postAdvert', destroyOnUnmount: false })(PostAdvert)
+    reduxForm({ destroyOnUnmount: false })(PostAdvert)
 );

@@ -11,7 +11,7 @@ export const resetPassword = (email, recaptcha) => async dispatch => {
         dispatch({ type: RESET_PASSWORD_SUCCESS });
     } catch (e) {
         const errorMessage = e.response.status === 404 ?
-            'Incorrect data' :
+            'The username or password you entered is incorrect' :
             get(e, 'response.data[0].message', 'Error');
         const error = { email: errorMessage};
 

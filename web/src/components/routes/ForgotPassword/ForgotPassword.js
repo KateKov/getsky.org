@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, Form, SubmissionError } from 'redux-form';
+import { Field, reduxForm, Form, SubmissionError, untouch } from 'redux-form';
 import { Box } from 'grid-styled';
 import { Helmet } from 'react-helmet';
 
@@ -51,14 +51,21 @@ class ForgotPassword extends React.Component {
     state = {
         passwordBeenReset: false,
     }
-    resetPassword = async () => {
+
+    resetPassword = async (_, dispatch) => {
         const { form, resetPassword } = this.props;
         return resetPassword(form.values.email, form.values.recaptcha)
-            .then(() => this.setState({ passwordBeenReset: true }))
+            .then(this.updateForm(dispatch))
             .catch((err) => {
                 throw new SubmissionError(err);
             });
     }
+
+    updateForm = (dispatch) => {
+        this.setState({ passwordBeenReset: true });
+        dispatch(untouch('forgotPasswordForm', 'recaptcha', ''));
+    }
+	
     render() {
         return (
             <Container flex='1 0 auto' flexDirection="column" py={5}>

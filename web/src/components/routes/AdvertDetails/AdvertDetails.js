@@ -107,7 +107,7 @@ const getAdvertPrice = (currency, selectedCurrency, fixedPrice, advertPrice, sel
 
 const convertedAdvertValue = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment, amountFrom, amountTo) => {
     const price = getAdvertPrice(currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment);
-    
+
     return `${amountFrom * price} ${amountTo ? `- ${amountTo * price}` : ''}`;
 };
 

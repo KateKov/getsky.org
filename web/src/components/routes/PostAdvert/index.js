@@ -22,8 +22,8 @@ class PostAdvert extends React.Component {
         const type = advertType === AdvertType.BUY ? ADVERT_BUY : ADVERT_SELL;
         const value = form.pricePerCoin.value;
         const extraData = form.pricePerCoin.type === PriceType.PERCENT
-            ? { percentageAdjustment: value, fixedPrice: null, author: this.props.userInfo.username, type }
-            : { percentageAdjustment: null, fixedPrice: value, author: this.props.userInfo.username, type };
+            ? { percentageAdjustment: value, fixedPrice: null, author: this.props.userInfo.username, type, currency: form.pricePerCoin.currency }
+            : { percentageAdjustment: null, fixedPrice: value, author: this.props.userInfo.username, type, currency: form.pricePerCoin.currency };
 
         this.props.setAdvertPreview(form, extraData);
         this.props.push(`/postings/${advertType}/preview`);
@@ -46,6 +46,7 @@ class PostAdvert extends React.Component {
                     onSubmit={this.onSubmit}
                     skyPrices={skyPrices}
                     selectedCurrency={selectedCurrency}
+                    userCurrency={userInfo.currency}
                     enableReinitialize
                 />}
             </Container>

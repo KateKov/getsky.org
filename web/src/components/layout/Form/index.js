@@ -1,3 +1,4 @@
+import ControlDropdown from './ControlDropdown';
 import ControlWrapper from './ControlWrapper';
 import FormInput from './FormInput';
 import ControlInput from './ControlInput';
@@ -16,6 +17,7 @@ import FormItem from './FormItem';
 import FormCheckbox from './FormCheckbox';
 
 export {
+    ControlDropdown,
     FormInput,
     FormLabel,
     FormDropdown,

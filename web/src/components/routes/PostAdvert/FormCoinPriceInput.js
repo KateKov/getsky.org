@@ -87,7 +87,7 @@ class FormCoinPriceInput extends React.Component {
         onChange({ ...value, currency });
     };
     render() {
-        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices, selectedCurrency } = this.props;
+        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices } = this.props;
         const showError = !!(touched && (error || warning));
         const skyPrice = skyPrices[value.currency];
 

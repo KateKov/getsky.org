@@ -18,13 +18,13 @@ func NewGeo(db *sqlx.DB) Geo {
 // GetCountries returns all available countries
 func (s Geo) GetCountries() ([]models.Country, error) {
 	countries := []models.Country{}
-	err := s.DB.Select(&countries, "SELECT * FROM Countries")
+	err := s.DB.Select(&countries, "SELECT Name, Code FROM Countries")
 	return countries, err
 }
 
 // GetStates returns all available countries
 func (s Geo) GetStates() ([]models.State, error) {
 	states := []models.State{}
-	err := s.DB.Select(&states, "SELECT * FROM States")
+	err := s.DB.Select(&states, "SELECT Name, Code FROM States")
 	return states, err
 }

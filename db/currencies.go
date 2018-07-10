@@ -20,7 +20,7 @@ func NewCurrenciesStorage(db *sqlx.DB) *CurrenciesStorage {
 // GetAllCurrencies returns a list of all currencies
 func (c CurrenciesStorage) GetAllCurrencies() ([]models.Currency, error) {
 	res := []models.Currency{}
-	cmd := `SELECT C.CountryCode, ` +
+	cmd := `SELECT ` +
 		`C.CurrencyCode ` +
 		`FROM Currencies C`
 

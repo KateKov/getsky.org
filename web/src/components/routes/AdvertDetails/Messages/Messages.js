@@ -153,8 +153,9 @@ const MessageCount = ({ author }) =>
         {author.totalMessages}
     </MessagesInfo>
 
-const Author = ({ backToUsers, selectedAuthor, messages, userInfo, allMessagesVisible, showAllMessages }) => (
-    <AuthorInfo mt={[2, 0, 0]}>
+const Author = ({ backToUsers, selectedAuthor, messages, userInfo, allMessagesVisible, showAllMessages }) => {
+    const isMoreLinkShown = messages && messages.length != 0 && allMessagesVisible;
+    return (<AuthorInfo mt={[2, 0, 0]}>
         {selectedAuthor
             && <BackLink onClick={backToUsers}>
                 <Icon name={IconMap.AngleLeft} />
@@ -169,11 +170,11 @@ const Author = ({ backToUsers, selectedAuthor, messages, userInfo, allMessagesVi
                 <Heading>Messages from {selectedAuthor.author}</Heading>
                 <MessageCount author={selectedAuthor} />
             </UsernameContainer>}
-        {!allMessagesVisible && <ShowMoreLinkContainer>
-            <ShowMoreLink onClick={showAllMessages}>Show more </ShowMoreLink>
+        {isMoreLinkShown && <ShowMoreLinkContainer>
+            <ShowMoreLink onClick={showAllMessages}>Show more</ShowMoreLink>
         </ShowMoreLinkContainer>}
     </AuthorInfo>
-);
+)};
 
 const getAuthorInitials = author => {
     const words = author.split(' ');

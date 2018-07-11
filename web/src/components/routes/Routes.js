@@ -15,6 +15,7 @@ import UserSettings from './UserSettings';
 import Dashboard from './Dashboard';
 import EditPosting from './EditPosting';
 import ContactUs from './ContactUs';
+import NotFound from './NotFound';
 import {
     ForgotPassword,
     ResetPassword,
@@ -77,7 +78,8 @@ const Routes = ({ match }) => {
              <PrivateRoute path={`/postings/sell`} component={PostAdvertSell} />
             <PrivateRoute path={`/edit-post/:id`} component={EditPosting} />
 
-            <Route path={`/`} component={LatestAdverts} />
+            <Route path={`/`} exact component={LatestAdverts} />
+            <Route component={NotFound}/>
         </Switch>
     );
 };

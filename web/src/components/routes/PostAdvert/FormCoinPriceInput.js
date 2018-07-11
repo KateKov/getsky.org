@@ -81,8 +81,8 @@ class FormCoinPriceInput extends React.Component {
         return (
             <FormItem name={name} label={<Label skyPrice={skyPrice} selectedCurrency={selectedCurrency} />} isRequired={isRequired} showError={showError} error={error}>
                 <Flex mt={3}>
-                    <Button type="button" text='PERCENTAGE ADJUSTMENT' onClick={() => this.setMode(PriceType.PERCENT)} style={fullWidth} primary={value.type === PriceType.PERCENT} />
-                    <Button type="button" text='FIXED PRICE' onClick={() => this.setMode(PriceType.FIXED)} style={fullWidth} primary={value.type === PriceType.FIXED} />
+                    <Button type="button" text='Percentage adjustment' onClick={() => this.setMode(PriceType.PERCENT)} style={fullWidth} primary={value.type === PriceType.PERCENT} />
+                    <Button type="button" text='Fixed price' onClick={() => this.setMode(PriceType.FIXED)} style={fullWidth} primary={value.type === PriceType.FIXED} />
                 </Flex>
                 <Flex mt={3} alignItems='center' >
                     {value.type === PriceType.PERCENT &&

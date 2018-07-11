@@ -1,10 +1,6 @@
 package main
 
 import (
-	"fmt"
-
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/namsral/flag"
 	"github.com/skycoin/getsky.org/db"
 	"github.com/skycoin/getsky.org/src/mail"
@@ -29,7 +25,7 @@ func main() {
 
 	log := logger.InitLogger()
 
-	sqlDb, err := initDb(*mysqlFlag)
+	sqlDb, err := db.InitDb(*mysqlFlag)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -50,13 +46,4 @@ func main() {
 	if err := server.Run(); err != nil {
 		panic(err.Error())
 	}
-}
-
-func initDb(addr string) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("mysql", fmt.Sprintf("%s/getskytrade?parseTime=true", addr))
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
 }

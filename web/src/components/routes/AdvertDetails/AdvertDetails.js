@@ -19,7 +19,7 @@ import {
 } from './actions';
 
 
-const PanelBody = styled(Box) `
+const PanelBody = styled(Box)`
     background-color: ${theme.colors.lightGray2};
     padding-left: ${props => props.theme.space[6]}px;
     width: 100%;
@@ -34,14 +34,14 @@ export const advertTypes = {
     '2': 'buy',
 };
 
-const PositionName = styled(Box) `
+const PositionName = styled(Box)`
     min-width: 100px;
     font-size: ${props => props.theme.fontSizes[1]}px;
     font-weight: bold;
     color: ${props => props.theme.colors.grayBlue};
 `;
 
-const PositionValue = styled(Box) `
+const PositionValue = styled(Box)`
     font-size: ${props => props.theme.fontSizes[2]}px;
     margin-top: ${props => props.theme.space[1]}px;
 
@@ -51,7 +51,7 @@ const PositionValue = styled(Box) `
     `}
 `;
 
-const PositionRow = styled(Flex) `
+const PositionRow = styled(Flex)`
     font-size: ${props => props.theme.fontSizes[3]}px;
     padding-top: ${props => props.theme.space[5]}px;
     padding-bottom: ${props => props.theme.space[5]}px;
@@ -81,32 +81,23 @@ const advertValueToString = (amountFrom, amountTo, price = 1) => {
     if (!amountTo) {
         return amountFrom.times(price).toString();
     }
-    
+
     return `${get(amountFrom, 'times(price).toString()', amountFrom)} to ${get(amountTo, 'times(price).toString()', amountTo)}`;
 };
 
-const getAdvertPrice = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment) => {
+const getAdvertPrice = (fixedPrice, advertPrice, percentageAdjustment) => {
     let price = 1;
-    if (currency === selectedCurrency) {
-        if (fixedPrice) {
-            price = Number.parseFloat(fixedPrice);
-        } else {
-            price = Number.parseFloat(advertPrice) + (Number.parseFloat(advertPrice) * Number.parseFloat(percentageAdjustment) / 100);
-        }
+    if (fixedPrice) {
+        price = Number.parseFloat(fixedPrice);
     } else {
-        const exchangeRate = Number.parseFloat(selectedCurrencyPrice) / Number.parseFloat(advertPrice);
-        if (fixedPrice) {
-            price = Number.parseFloat(fixedPrice) * exchangeRate;
-        } else {
-            price = Number.parseFloat(selectedCurrencyPrice) + ((Number.parseFloat(advertPrice) * Number.parseFloat(percentageAdjustment) / 100) * exchangeRate);
-        }
+        price = Number.parseFloat(advertPrice) + (Number.parseFloat(advertPrice) * Number.parseFloat(percentageAdjustment) / 100);
     }
 
     return round(price, 2);
 }
 
-const convertedAdvertValue = (currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment, amountFrom, amountTo) => {
-    const price = getAdvertPrice(currency, selectedCurrency, fixedPrice, advertPrice, selectedCurrencyPrice, percentageAdjustment);
+const convertedAdvertValue = (fixedPrice, advertPrice, percentageAdjustment, amountFrom, amountTo) => {
+    const price = getAdvertPrice(fixedPrice, advertPrice, percentageAdjustment);
 
     return `${amountFrom * price} ${amountTo ? `- ${amountTo * price}` : ''}`;
 };
@@ -169,7 +160,7 @@ const Country = styled.p`
     font-weight: 300;
 `;
 
-export const AdvertSummary = ({ details, countries, states, skyPrices, selectedCurrency }) => (
+export const AdvertSummary = ({ details, countries, states, skyPrices }) => (
     <Flex flexDirection="row" flexWrap="wrap">
         <PanelBody>
             <Flex flexDirection="row" flexWrap="wrap">
@@ -184,11 +175,11 @@ export const AdvertSummary = ({ details, countries, states, skyPrices, selectedC
                 </SummaryPosition>
                 <SummaryPosition
                     name="Which is approximately:">
-                    <Focused> {convertedAdvertValue(details.currency, selectedCurrency, details.fixedPrice, skyPrices[details.currency], skyPrices[selectedCurrency], details.percentageAdjustment, details.amountFrom, details.amountTo)} {selectedCurrency}</Focused>
+                    <Focused> {convertedAdvertValue(details.fixedPrice, skyPrices[details.currency], details.percentageAdjustment, details.amountFrom, details.amountTo)} {details.currency}</Focused>
                 </SummaryPosition>
                 <SummaryPosition
                     name="Price per SKY:">
-                    <Focused> {getAdvertPrice(details.currency, selectedCurrency, details.fixedPrice, skyPrices[details.currency], skyPrices[selectedCurrency], details.percentageAdjustment)} {selectedCurrency}</Focused>
+                    <Focused> {getAdvertPrice(details.fixedPrice, skyPrices[details.currency], details.percentageAdjustment)} {details.currency}</Focused>
                 </SummaryPosition>
                 <SummaryPosition
                     name="Trade options:">
@@ -258,7 +249,6 @@ export default connect(
                         <AdvertSummary
                             details={advertDetails}
                             skyPrices={app.skyPrices}
-                            selectedCurrency={app.selectedCurrency}
                             countries={app.countries}
                             states={app.states} />
                     </Box>

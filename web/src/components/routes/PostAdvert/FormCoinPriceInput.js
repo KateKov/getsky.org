@@ -47,9 +47,9 @@ const FixedPriceTip = () => (
     </Box>
 );
 
-const Label = ({ skyPrice, selectedCurrency }) => (
+const Label = ({ skyPrice, currency }) => (
     <Span>
-        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} {selectedCurrency})
+        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} {currency})
     </Span>
 );
 
@@ -92,7 +92,7 @@ class FormCoinPriceInput extends React.Component {
         const skyPrice = skyPrices[value.currency];
 
         return (
-            <FormItem name={name} label={<Label skyPrice={skyPrice} selectedCurrency={value.currency} />} isRequired={isRequired} showError={showError} error={error}>
+            <FormItem name={name} label={<Label skyPrice={skyPrice} currency={value.currency} />} isRequired={isRequired} showError={showError} error={error}>
                 <Flex mt={3}>
                     <Button type="button" text='PERCENTAGE ADJUSTMENT' onClick={() => this.setMode(PriceType.PERCENT)} style={fullWidth} primary={value.type === PriceType.PERCENT} />
                     <Button type="button" text='FIXED PRICE' onClick={() => this.setMode(PriceType.FIXED)} style={fullWidth} primary={value.type === PriceType.FIXED} />

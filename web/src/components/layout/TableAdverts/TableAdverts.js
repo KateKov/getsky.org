@@ -61,22 +61,15 @@ const getPrice = advert => `${advert.amountFrom} ${advert.amountTo ? `- ${advert
 
 const getConvertedPrice = advert => {
     let price = 1;
-    if (advert.currency === advert.selectedCurrency) {
-        if (advert.fixedPrice) {
-            price = Number.parseFloat(advert.fixedPrice);
-        } else {
-            price = Number.parseFloat(advert.price) + (Number.parseFloat(advert.price) * Number.parseFloat(advert.percentageAdjustment) / 100);
-        }
+
+    if (advert.fixedPrice) {
+        price = Number.parseFloat(advert.fixedPrice);
     } else {
-        const exchangeRate = Number.parseFloat(advert.selectedCurrencyPrice) / Number.parseFloat(advert.price);
-        if (advert.fixedPrice) {
-            price = Number.parseFloat(advert.fixedPrice) * exchangeRate;
-        } else {
-            price = Number.parseFloat(advert.selectedCurrencyPrice) + ((Number.parseFloat(advert.price) * Number.parseFloat(advert.percentageAdjustment) / 100) * exchangeRate);
-        }
+        price = Number.parseFloat(advert.price) + (Number.parseFloat(advert.price) * Number.parseFloat(advert.percentageAdjustment) / 100);
     }
+
     price = round(price, 2);
-    return `${advert.amountFrom * price} ${advert.amountTo ? `- ${advert.amountTo * price}` : ''} ${advert.selectedCurrency}`;
+    return `${advert.amountFrom * price} ${advert.amountTo ? `- ${advert.amountTo * price}` : ''} ${advert.currency}`;
 };
 
 const getTradeOptionsText = advert => {
@@ -86,6 +79,7 @@ const getTradeOptionsText = advert => {
 
 export const AdvertRow = ({ data, rowOperations, columns }) => {
     const advert = data;
+
     let i = data.totalMessagesAmount !== undefined ? 1 : 0;
     return (
         <LinkedTableRow href={`post/${advert.id}`}>

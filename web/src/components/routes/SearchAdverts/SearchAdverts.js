@@ -31,7 +31,7 @@ const sellAdvertsColumns = [
     { name: 'Expired', style: { width: '170px' } },
 ];
 
-const BreadcrumbLink = styled(Link) `
+const BreadcrumbLink = styled(Link)`
     font-size: 12px;
     color: ${props => props.theme.colors.grayBlue};
 `;
@@ -74,7 +74,7 @@ const Badge = styled.span`
     vertical-align: top;
 `;
 
-const mapAdverts = (adverts, prices, selectedCurrency) => adverts.map(a => ({ ...a, price: prices[a.currency], selectedCurrency,  selectedCurrencyPrice: prices[selectedCurrency] }));
+const mapAdverts = (adverts, prices, selectedCurrency) => adverts.map(a => ({ ...a, price: prices[a.currency], selectedCurrency, selectedCurrencyPrice: prices[selectedCurrency] }));
 
 class SearchAdverts extends React.Component {
     componentWillMount() {
@@ -108,13 +108,7 @@ class SearchAdverts extends React.Component {
         this.props.searchAdverts(query);
     };
 
-    prepareCurrencies = (currencies) => {
-        let currenciesData = [];
-        currencies.forEach(function (c) {
-            currenciesData.push({ text: c, value: c })
-        });
-        return currenciesData;
-    };
+    prepareCurrencies = (skyPrices) => Object.keys(skyPrices).map((k) => ({ text: k, value: k }));
 
     render() {
         const {
@@ -123,7 +117,8 @@ class SearchAdverts extends React.Component {
             location,
             search: { buyAdverts, sellAdverts, loading },
             skyPrices,
-            selectedCurrency, } = this.props;
+            selectedCurrency,
+        } = this.props;
 
         return (
             <div>
@@ -137,7 +132,7 @@ class SearchAdverts extends React.Component {
                         <Filters
                             countries={countries}
                             states={states}
-                            currencies={this.prepareCurrencies([])}
+                            currencies={this.prepareCurrencies(skyPrices)}
                             onChange={this.handleFiltersChange}
                             onSubmit={this.handleSubmit}
                             query={location.search}
@@ -172,10 +167,13 @@ class SearchAdverts extends React.Component {
                                     <div>
                                         <Title>
                                             Buyer adverts
-                                        {buyAdverts.length > 0 && <Badge>{buyAdverts.length}</Badge>}
+                                            {buyAdverts.length > 0 && <Badge>{buyAdverts.length}</Badge>}
                                         </Title>
-                                        <Table columns={sellAdvertsColumns} rowComponent={AdvertRow}
-                                            rowData={mapAdverts(buyAdverts, skyPrices, selectedCurrency)} />
+                                        <Table
+                                            columns={sellAdvertsColumns}
+                                            rowComponent={AdvertRow}
+                                            rowData={mapAdverts(buyAdverts, skyPrices, selectedCurrency)}
+                                        />
                                     </div>
                                 }
                             </Container>
@@ -193,7 +191,6 @@ const mapStateToProps = (state) => ({
     states: state.app.states,
     search: state.search,
     skyPrices: state.app.skyPrices,
-    selectedCurrency: state.app.selectedCurrency,
 });
 
 export default connect(mapStateToProps, ({ searchAdverts, setFilters, clearFilters }))(SearchAdverts);

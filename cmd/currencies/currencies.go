@@ -5,6 +5,8 @@ import (
 	"github.com/skycoin/getsky.org/db"
 	"github.com/skycoin/getsky.org/src/currencies"
 	"github.com/skycoin/getsky.org/src/util/logger"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {

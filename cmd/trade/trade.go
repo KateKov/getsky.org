@@ -7,6 +7,8 @@ import (
 	"github.com/skycoin/getsky.org/src/skycoinPrice"
 	"github.com/skycoin/getsky.org/src/trade"
 	"github.com/skycoin/getsky.org/src/util/logger"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {

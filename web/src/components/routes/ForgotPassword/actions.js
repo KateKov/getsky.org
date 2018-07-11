@@ -10,13 +10,7 @@ export const resetPassword = (email, recaptcha) => async dispatch => {
         await resetPasswordRequest({ email, recaptcha });
         dispatch({ type: RESET_PASSWORD_SUCCESS });
     } catch (e) {
-        const errorMessage = e.response.status === 404 ?
-            'Such email doesn\'t exist' :
-            get(e, 'response.data[0].message', 'Error');
-        const error = { email: errorMessage};
-
         dispatch({ type: RESET_PASSWORD_FAILED });
-        return Promise.reject(error);
     }
 };
 

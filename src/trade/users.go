@@ -303,11 +303,11 @@ func ResetPasswordRequestHandler(s *HTTPServer) httputil.APIHandler {
 		_, err = s.users.GetByEmail(body.Email)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("the user with the email: '%s' doesn't exist", body.Email), http.StatusNotFound)
-			s.log.Error(fmt.Sprintf("The user with the email: '%s' doesn't exist in the db", body.Email))
+			s.log.Error(fmt.Sprintf("users.ResetPasswordRequestHandler > s.users.GebByEmail > The user with the email: '%s' doesn't exist in the db:'%s'", body.Email, err))
 			return nil
 		}
 
-		s.log.Info(fmt.Sprintf("The user with the email: '%s' exists in the db", body.Email))
+		s.log.Info(fmt.Sprintf("users.ResetPasswordRequestHandler > s.users.GebByEmail > The user with the email: '%s' exists in the db, sending reset password email.", body.Email))
 		code, err := s.authenticator.GenerateResetPasswordCode(body.Email)
 		if err != nil {
 			return err

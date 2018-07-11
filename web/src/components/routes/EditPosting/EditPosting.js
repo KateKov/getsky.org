@@ -79,6 +79,7 @@ class EditAdvert extends React.Component {
                 </Helmet>
                 <BackIcLink path='/dashboard' text='Dashboard' />
                 <PostingForm
+				    form='postAdvert'
                     editMode
                     enableReinitialize
                     initialValues={mapAdvertDetailsToForm(advertDetails)}

@@ -40,7 +40,7 @@ const ExtendConfirm = ({ isOpen, onConfirm, onClose, advert }) => {
                     <B> increases the expiration date by 4 weeks.</B>
                 </P>
                 <Warning>
-                    If you extend this advert, the new expiration date will be: <B>{moment(advert.expiredAt).format('LLLL')}</B>
+                    If you extend this advert, the new expiration date will be: <B>{moment(advert.expiredAt).add(28, 'day').format('LLLL')}</B>
                 </Warning>
             </Box>
         </ConfirmModal>

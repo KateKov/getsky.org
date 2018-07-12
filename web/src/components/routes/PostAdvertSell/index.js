@@ -4,11 +4,19 @@ import PostAdvert from '../PostAdvert';
 
 const advertType = "sell";
 
-const PostAdvertSell =  ({ countries, states, userInfo, skyPrices, selectedCurrency, preview }) => { 
-        return (
-            <PostAdvert advertType={advertType} preview={preview}countries={countries} states={states} userInfo={userInfo} skyPrices={skyPrices} selectedCurrency={selectedCurrency}  />
-        );
-    }
+const PostAdvertSell = ({ countries, states, userInfo, skyPrices, selectedCurrency, preview }) => {
+    return (
+        <PostAdvert
+            advertType={advertType}
+            preview={preview}
+            countries={countries}
+            states={states}
+            userInfo={userInfo}
+            skyPrices={skyPrices}
+            selectedCurrency={selectedCurrency}
+        />
+    );
+}
 
 const mapStateToProps = ({ app, preview }) => ({
     countries: app.countries,

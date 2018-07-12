@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e # exit on first error
 
-openssl aes-256-cbc -K $encrypted_e3d1e333f63b_key -iv $encrypted_e3d1e333f63b_iv -in ./.travis/id_rsa.getsky.deploy.enc -out ./.travis/id_rsa.getsky.deploy -d
+openssl aes-256-cbc -K $encrypted_fefd698972eb_key -iv $encrypted_fefd698972eb_iv -in ./.travis/id_rsa.getsky.deploy.enc -out ./.travis/id_rsa.getsky.deploy -d
 
 eval "$(ssh-agent -s)" # start ssh-agent cache
 # id_rsa is decrypted as the first step of Travis build, see .travis.yml
@@ -19,7 +19,7 @@ EOF
 
 # push latest changes to test server's remote repo
 git config --global push.default matching
-git remote add deploy ssh://$PUSH_USER@$IP:$PORT$DEPLOY_DIR
+git remote add deploy ssh://$RUN_USER@$IP:$PORT$DEPLOY_DIR
 git push deploy develop
 
 # start updated services
@@ -30,11 +30,19 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
   export REACT_APP_RECAPTCHA_KEY=${REACT_APP_RECAPTCHA_KEY}
   export FEEDBACK_ADDRESS=${FEEDBACK_ADDRESS}
   export MAIL_HOST=${MAIL_HOST}
+  export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  export MYSQL_USER=${MYSQL_USER}
+  export MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  export TRADE_MYSQL="${TRADE_MYSQL}"
+  export TRADE_MYSQL_MIGRATIONS="${TRADE_MYSQL_MIGRATIONS}"
   cd $DEPLOY_DIR
   sudo service docker restart # restart docker service to prevent "timeout" errors (https://github.com/docker/compose/issues/3633#issuecomment-254194717)
   make run-test-docker
   # run migrations
-  docker exec backend sh -c "cd /usr/local/go/src/github.com/skycoin/getsky.org/db/ && bash ./migrate.sh"
+  cd ./db
+  bash ./migrate.sh "${TRADE_MYSQL_MIGRATIONS}"
+  cd ..
+
 EOF
 
 # ssh-agent -k

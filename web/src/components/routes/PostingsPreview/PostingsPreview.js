@@ -80,10 +80,18 @@ class PostingsPreview extends React.Component {
                     states={states}
                     details={preview}
                     selectedCurrency={selectedCurrency}
-                    skyPrices={skyPrices} />
+                    skyPrices={skyPrices}
+                />
             </Container>
         )
     }
+}
+
+const getCurrentOrDefaultCurrency = (userInfo) => {
+    if (userInfo != null && userInfo.currency !== '') {
+        return userInfo.currency;
+    }
+    return 'USD';
 }
 
 const mapStateToProps = ({ preview, app }) => ({
@@ -91,7 +99,7 @@ const mapStateToProps = ({ preview, app }) => ({
     countries: app.countries,
     states: app.states,
     skyPrices: app.skyPrices,
-    selectedCurrency: app.selectedCurrency,
+    selectedCurrency: getCurrentOrDefaultCurrency(app.userInfo),
 });
 
 export default connect(mapStateToProps, { push, createBuyAdvert, createSellAdvert })(PostingsPreview);

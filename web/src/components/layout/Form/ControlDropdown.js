@@ -6,7 +6,7 @@ import { getBorderColor } from './helper';
 
 const SelectWrapper = styled.div`
     position: relative;
-    
+
     &::after {
         content: '';
         position: absolute;
@@ -54,15 +54,16 @@ const sortOptions = (a,b) => {
     return 0;
 }
 
-const ControlDropdown = ({ name, options, onChange, error, input, disabled, bg, color }) =>
+const ControlDropdown = ({ name, options, onChange, error, input, disabled, bg, color, noSelect }) =>
     <SelectWrapper>
         <Select name={name} value={input ? input.value : ""} onChange={onChange} error={error} disabled={disabled} bg={bg} color={color}>
-            <option value="">Select</option>
+            {!noSelect && <option value="">Select</option>}
             {options.sort(sortOptions).map((item, i) => <option value={item.value} key={i}>{item.text}</option>)}
         </Select>
     </SelectWrapper>;
 
 ControlDropdown.propTypes = {
+    noSelect: PropTypes.bool,
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({

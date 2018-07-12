@@ -19,7 +19,16 @@ class FormPreview extends React.Component {
     }
 
     render() {
-        const { handleSubmit, pristine, submitting, countries, states, details, skyPrices, selectedCurrency } = this.props;
+        const {
+            handleSubmit,
+            pristine,
+            submitting,
+            countries,
+            states,
+            details,
+            skyPrices,
+            selectedCurrency,
+        } = this.props;
 
         return (
             <Form onSubmit={handleSubmit}>

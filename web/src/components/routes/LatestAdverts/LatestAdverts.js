@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Box } from 'grid-styled';
 import { Helmet } from 'react-helmet';
 import { getPageTitle } from 'utils';
+import SearchButton from 'components/layout/SearchAdverts';
 import Container from 'components/layout/Container';
 import Table from 'components/layout/Table';
 import { AdvertRow } from 'components/layout/TableAdverts';
@@ -97,6 +98,7 @@ class LatestAdverts extends React.Component {
                         </Container>
                     </TabPanel>
                 </Tabs>
+			   <SearchButton/>
             </Box>
         );
     }

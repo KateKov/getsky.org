@@ -4,7 +4,7 @@ import { Flex, Box } from 'grid-styled';
 
 import { B, Tip, Span } from 'components/layout/Text';
 import { Button } from 'components/layout/Button';
-import { ControlInput, FormItem } from 'components/layout/Form';
+import { ControlInput, FormItem, ControlDropdown } from 'components/layout/Form';
 import TipToggles from 'components/layout/TipToggles';
 import { round } from 'utils/';
 import { PriceType } from 'constants/index';
@@ -47,50 +47,74 @@ const FixedPriceTip = () => (
     </Box>
 );
 
-const Label = ({ skyPrice, selectedCurrency }) => (
+const Label = ({ skyPrice, currency }) => (
     <Span>
-        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} {selectedCurrency})
+        Price per coin (last price from <a href={'https://coinmarketcap.com/currencies/skycoin/'}>coinmarketcap.com</a> = {round(skyPrice, 2)} {currency})
     </Span>
 );
 
-class FormCoinPriceInput extends React.Component {
-    setInitValue = () => {
-        const { input: { onChange } } = this.props;
-        onChange({value: '', type: PriceType.PERCENT});
-    };
+const getCurrencies = (skyPrices) => {
+    if (skyPrices !== null) {
+        return Object.keys(skyPrices).map(v => ({ text: v, value: v }));
+    }
+    return [];
+}
 
+class FormCoinPriceInput extends React.Component {
+    componentDidMount() {
+        const { input: { onChange } } = this.props;
+        onChange({ value: '', type: PriceType.PERCENT, currency: this.props.userCurrency || 'USD' });
+    };
+    componentDidUpdate(prevProps) {
+        if (this.props.userCurrency !== prevProps.userCurrency) {
+            this.onChangeCurrency(prevProps.userCurrency);
+        }
+    };
     setMode = mode => {
         const { input: { value, onChange } } = this.props;
-        onChange({ value, type: mode });
+        onChange({ value: value.value, type: mode, currency: value.currency });
     };
     onChange = e => {
         const { input: { value, onChange } } = this.props;
         const val = e.target.value;
         const newValue = isNaN(parseFloat(val)) ? '' : parseFloat(val);
 
-        onChange({ value: newValue, type: value.type });
-    }
+        onChange({ value: newValue, type: value.type, currency: value.currency });
+    };
+    onChangeCurrency = (e) => {
+        const { input: { value, onChange } } = this.props;
+        const currency = e.target.value;
+        onChange({ ...value, currency });
+    };
     render() {
-        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices, selectedCurrency } = this.props;
+        const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices } = this.props;
         const showError = !!(touched && (error || warning));
-        const skyPrice = skyPrices[selectedCurrency];
-        if(!value){
-            this.setInitValue();
-        }
+        const skyPrice = skyPrices[value.currency];
 
         return (
-            <FormItem name={name} label={<Label skyPrice={skyPrice} selectedCurrency={selectedCurrency} />} isRequired={isRequired} showError={showError} error={error}>
+            <FormItem name={name} label={<Label skyPrice={skyPrice} currency={value.currency} />} isRequired={isRequired} showError={showError} error={error}>
                 <Flex mt={3}>
                     <Button type="button" text='PERCENTAGE ADJUSTMENT' onClick={() => this.setMode(PriceType.PERCENT)} style={fullWidth} primary={value.type === PriceType.PERCENT} />
                     <Button type="button" text='FIXED PRICE' onClick={() => this.setMode(PriceType.FIXED)} style={fullWidth} primary={value.type === PriceType.FIXED} />
                 </Flex>
                 <Flex mt={3} alignItems='center' >
-                    {value.type === PriceType.PERCENT &&
-                        <ControlInput type="number" placeholder={'percentage adjustment, e.g. 5'} error={showError} min={0} max={100} step={0.01} value={value.value} onChange={this.onChange} />
-                    }
-                    {value.type === PriceType.FIXED &&
-                        <ControlInput type="number" placeholder={selectedCurrency} error={showError} value={value.value} step={0.01} onChange={this.onChange} />
-                    }
+                    <Box width={3 / 4}>
+                        {value.type === PriceType.PERCENT &&
+                            <ControlInput type="number" placeholder={'percentage adjustment, e.g. 5'} error={showError} min={0} max={100} step={0.01} value={value.value} onChange={this.onChange} />
+                        }
+                        {value.type === PriceType.FIXED &&
+                            <ControlInput type="number" placeholder={value.currency} error={showError} value={value.value} step={0.01} onChange={this.onChange} />
+                        }
+                    </Box>
+                    <Box ml={'-1px'} width={1 / 4}>
+                        <ControlDropdown
+                            name="selectedCurrency"
+                            options={getCurrencies(skyPrices)}
+                            onChange={this.onChangeCurrency}
+                            input={{ value: value.currency }}
+                            noSelect
+                        />
+                    </Box>
                 </Flex>
                 <Box mt={3}>
                     {value.type === PriceType.PERCENT &&

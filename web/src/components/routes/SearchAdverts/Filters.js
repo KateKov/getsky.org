@@ -8,27 +8,37 @@ import { Button } from 'components/layout/Button';
 import { ACCEPT_TRADE_OPTIONS } from 'constants/index';
 import { countryHasStates } from 'utils';
 
-const ConnectedDropdowns = (fields) => (
-    <Flex mx={-4} flexWrap="wrap">
-        <Box w={[1, 1, 1 / 2]} px={4}>
-            <FormDropdown
-                {...fields.countryCode}
-                options={fields.countries}
-                triggerOnChange={false}
-                label="Country"
-            />
-        </Box>
-        <Box w={[1, 1, 1 / 2]} px={4}>
-            <FormDropdown
-                {...fields.stateCode}
-                options={fields.states}
-                triggerOnChange={false}
-                disabled={!countryHasStates(fields.countryCode.input.value)}
-                label="State"
-            />
-        </Box>
-    </Flex>
-);
+const ConnectedDropdowns = (props) => {
+    return (
+        <Flex mx={-4} flexWrap="wrap">
+            <Box w={[1, 1, 1 / 3]} px={4}>
+                <FormDropdown
+                    {...props.countryCode}
+                    options={props.countries}
+                    triggerOnChange={false}
+                    label="Country"
+                />
+            </Box>
+            <Box w={[1, 1, 1 / 3]} px={4}>
+                <FormDropdown
+                    {...props.stateCode}
+                    options={props.states}
+                    triggerOnChange={false}
+                    disabled={!countryHasStates(props.countryCode.input.value)}
+                    label="State"
+                />
+            </Box>
+            <Box w={[1, 1, 1 / 3]} px={4}>
+                <FormDropdown
+                    {...props.currency}
+                    options={props.currencies}
+                    triggerOnChange={false}
+                    label="Currency"
+                />
+            </Box>
+        </Flex>
+    )
+};
 
 const Amount = styled(Box)`
     flex-grow: 1;
@@ -41,27 +51,27 @@ const Hr = styled.hr`
     background: ${props => props.theme.colors.darkGray}; 
 `;
 
-class Filters extends React.PureComponent{
-
+class Filters extends React.PureComponent {
     componentWillUpdate(nextProps) {
         const { countryCode, stateCode } = this.props;
-        if (countryCode !== nextProps.countryCode &&  !countryHasStates(nextProps.countryCode) && stateCode !== '') {
+        if (countryCode !== nextProps.countryCode && !countryHasStates(nextProps.countryCode) && stateCode !== '') {
             this.props.dispatch(change('filters', 'stateCode', ''));
         }
     }
 
+    render() {
+        const { countries, states, currencies, handleSubmit } = this.props;
 
-    render(){
-        const { countries, states, /*currencies,*/ handleSubmit } = this.props;
         return (
             <Form onSubmit={handleSubmit} noValidate>
                 <Flex py={4} mx={-4} flexWrap="wrap">
                     <Box w={[1, 1, 1 / 2]} px={4}>
                         <Fields
-                            names={[ 'countryCode', 'stateCode' ]}
+                            names={['countryCode', 'stateCode', 'currency']}
                             component={ConnectedDropdowns}
                             countries={countries}
                             states={states}
+                            currencies={currencies}
                         />
                     </Box>
                     <Box w={[1, 1 / 2, 1 / 4]} px={4}>
@@ -71,18 +81,17 @@ class Filters extends React.PureComponent{
                         <Amount pr={2}>
                             <Field component={FormInput} name="amount" label="Amount (SKY)" />
                         </Amount>
-                        {/* <Field component={FormDropdown} options={currencies} name="currency" triggerOnChange={false} /> */}
                     </Flex>
                 </Flex>
-                <Hr/>
+                <Hr />
                 <Flex py={4} mx={-4} flexWrap="wrap" alignItems="flex-end">
                     <Box w={[1, 1, 3 / 4]} px={4}>
                         <FormLabel>Trade</FormLabel>
                         <Flex flexWrap="wrap">
                             {ACCEPT_TRADE_OPTIONS.length > 0
-                            && ACCEPT_TRADE_OPTIONS.map(o =>
-                                <Field key={`filter-${o.title}`} component={FormCheckbox} name={o.value} label={o.title} />
-                            )}
+                                && ACCEPT_TRADE_OPTIONS.map(o =>
+                                    <Field key={`filter-${o.title}`} component={FormCheckbox} name={o.value} label={o.title} />
+                                )}
                         </Flex>
                     </Box>
                     <Box w={[1, 1, 1 / 4]} px={4} pt={[4, 0, 0]}>

@@ -1,7 +1,12 @@
 package models
 
+import (
+	"github.com/shopspring/decimal"
+)
+
 // Currency represents an information about country currency
 type Currency struct {
-	CountryCode  string `db:"CountryCode"`
-	CurrencyCode string `db:"CurrencyCode"`
+	ID           int64           `db:"Id"`
+	CurrencyCode string          `db:"CurrencyCode"`
+	Rate         decimal.Decimal `db:"Rate"`
 }

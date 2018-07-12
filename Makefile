@@ -1,9 +1,12 @@
 .DEFAULT_GOAL := help
-.PHONY: trade test-api lint check db-schema stop-docker build-web run-web run-mysql run-docker help run-test-docker
+.PHONY: trade test-api lint check db-schema stop-docker build-web run-web run-mysql run-docker help run-test-docker build-currency-feed
 
 build-web: ## Restores packages and builds web app
 	cd web; yarn install
 	cd web; npm run build
+
+build-currency-feed: ## Builds app that pulls currency rates
+	go build cmd/currencies/currencies.go
 
 run-web: ## Runs web app locally
 	cd web; npm start
@@ -19,7 +22,7 @@ docker-test-up: ## Starts docker containers with test server configuration
 
 run-docker: build-web docker-up ## Run all containers
 
-run-test-docker: build-web docker-test-up ## Run all containers with test server configuration
+run-test-docker: build-web build-currency-feed docker-test-up ## Run all containers with test server configuration
 
 trade: ## Run trade back-end. To add arguments, do 'make ARGS="--foo" trade'.
 	go run cmd/trade/trade.go ${ARGS}&

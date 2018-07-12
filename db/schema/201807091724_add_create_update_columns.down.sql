@@ -1,3 +1,5 @@
+START TRANSACTION;
+
 ALTER TABLE Adverts
 	DROP COLUMN UpdatedAt;
 
@@ -19,3 +21,5 @@ ALTER TABLE States
 ALTER TABLE Users
 	DROP COLUMN CreatedAt,
 	DROP COLUMN UpdatedAt;
+
+COMMIT;

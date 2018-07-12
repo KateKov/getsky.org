@@ -24,8 +24,18 @@ const rData = required(v => v ? v.data === 0 ? 1 : v.data : v);
 const minData0 = min(0, v => v.data);
 const maxData9999 = max(9999, v => v.data);
 
-const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency, handleSubmit, editMode, theForm, preview }) => {
-
+const PostAdvert = ({
+    advertType,
+    states,
+    countries,
+    skyPrices,
+    selectedCurrency,
+    handleSubmit,
+    editMode,
+    theForm,
+    preview,
+    userCurrency,
+}) => {
     return (
         <Form onSubmit={handleSubmit} noValidate>
             <Box width={[1, 1, 1 / 2]}>
@@ -38,7 +48,7 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
                         isRequired
                         parse={({ from, to, mode }) => {
                             return {
-                                from: from !== '' ? new Decimal(from) :  get(preview, 'amountFrom.d[0]', ''),
+                                from: from !== '' ? new Decimal(from) : get(preview, 'amountFrom.d[0]', ''),
                                 to: (to && to !== '') ? new Decimal(to) : '',
                                 mode
                             };
@@ -55,6 +65,7 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
                         label={'Price per coin'}
                         selectedCurrency={selectedCurrency}
                         skyPrices={skyPrices}
+                        userCurrency={userCurrency}
                         isRequired
                         validate={[r]}
                     />
@@ -79,11 +90,11 @@ const PostAdvert = ({ advertType, states, countries, skyPrices, selectedCurrency
                         validate={[rData, minData0, maxData9999]}
                     />
                 </FormGroup>
-                <LocationFormGroup 
-                    states={states} 
-                    countries={countries} 
+                <LocationFormGroup
+                    states={states}
+                    countries={countries}
                     showStates={countryInFormHasStates(theForm)}
-                    />
+                />
                 <AdditionalInformationSample />
                 <Button type="submit" text={editMode ? 'Save' : 'Next'} primary />
             </Box>

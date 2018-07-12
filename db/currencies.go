@@ -21,8 +21,10 @@ func NewCurrenciesStorage(db *sqlx.DB) *CurrenciesStorage {
 func (c CurrenciesStorage) GetAllCurrencies() ([]models.Currency, error) {
 	res := []models.Currency{}
 	cmd := `SELECT ` +
-		`C.CurrencyCode ` +
-		`FROM Currencies C`
+		` C.Id, ` +
+		` C.CurrencyCode, ` +
+		` C.Rate ` +
+		` FROM Currencies C`
 
 	err := c.DB.Select(&res, cmd)
 	if err != nil {
@@ -30,4 +32,15 @@ func (c CurrenciesStorage) GetAllCurrencies() ([]models.Currency, error) {
 	}
 
 	return res, nil
+}
+
+// Update updates entire currency row in the db
+func (c CurrenciesStorage) Update(cur models.Currency) error {
+	cmd := `UPDATE Currencies SET ` +
+		` CurrencyCode=:CurrencyCode, ` +
+		` Rate=:Rate ` +
+		` WHERE Id=:Id `
+
+	_, err := c.DB.NamedExec(cmd, cur)
+	return err
 }

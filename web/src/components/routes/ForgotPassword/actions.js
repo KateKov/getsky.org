@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import { resetPasswordRequest, recoverPassword } from 'api/index';
 
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
@@ -25,5 +24,4 @@ export const saveNewPassword = (newPassword, code) => async dispatch => {
     } catch (e) {
         dispatch({ type: RECOVER_PASSWORD_FAILED });
     }
-  
 };

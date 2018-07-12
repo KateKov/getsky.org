@@ -73,7 +73,7 @@ services:
     depends_on: 
       - "mysql"
     environment:
-      - CRON_HOUR=24 * * * * root /srv/cleanup -mysql="${TRADE_MYSQL}"
+      - CRON_HOUR=24 * * * * root /srv/currencies -mysql="${TRADE_MYSQL}"
       - TRADE_MYSQL="${TRADE_MYSQL}"
     volumes:
       - ./currencies:/srv/currencies

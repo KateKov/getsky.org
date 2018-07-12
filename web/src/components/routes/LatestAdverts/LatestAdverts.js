@@ -1,9 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Box } from 'grid-styled';
 import { Helmet } from 'react-helmet';
-
 import { getPageTitle } from 'utils';
 import Container from 'components/layout/Container';
 import Table from 'components/layout/Table';
@@ -12,7 +11,7 @@ import { AdvertRow } from 'components/layout/TableAdverts';
 import Spinner from 'components/layout/Spinner';
 
 import { Tab, Tabs, TabList, TabPanel } from 'components/layout/Tabs';
-import { getAdverts } from './actions';
+import { getAdverts, goToEdit } from './actions';
 import bgImage from './intro-bg.svg';
 
 const Intro = styled.div`
@@ -59,6 +58,13 @@ class LatestAdverts extends React.Component {
         this.props.getAdverts();
     }
 
+    componentDidMount() {
+        window.onpopstate = (e) => {
+            e.preventDefault();
+            this.props.goToEdit(e.target.location, this.props.prevForm);
+        }
+    }
+
     render() {
         const { skyPrices, buyAdverts, sellAdverts, loading, selectedCurrency, } = this.props;
 
@@ -96,5 +102,5 @@ class LatestAdverts extends React.Component {
     }
 }
 
-export default connect(({ latestAdverts, app: { skyPrices, selectedCurrency, } }) => ({ ...latestAdverts, skyPrices, selectedCurrency }),
-    ({ getAdverts }))(LatestAdverts);
+export default connect(({ latestAdverts, app: { skyPrices, selectedCurrency, }, prevForm }) => ({ ...latestAdverts, skyPrices, selectedCurrency, prevForm }),
+    ({ getAdverts, goToEdit }))(LatestAdverts);

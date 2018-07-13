@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import { postBuyAdvert, postSellAdvert } from 'api/';
 import { SellFormName, BuyFormName } from 'constants/index'
-import { FORM_PREVIEW_CLEARED } from '../PostAdvert/actions';
+
 export const SET_FORM_PREVIEW = 'SET_FORM_PREVIEW ';
 export const CLEAR_FORM_PREVIEW = 'CLEAR_FORM_PREVIEW';
 
@@ -46,24 +46,16 @@ export const setAdvertPreview = (formPreview, extraData) =>
 
 export const createBuyAdvert = (advert) =>
     async dispatch => {
-        let buyAdvert = await postBuyAdvert(advert);
+        await postBuyAdvert(advert);
         dispatch(push('/'));
         dispatch(destroyForm(BuyFormName));
-        dispatch({ type: CLEAR_FORM_PREVIEW});
-        if(buyAdvert && buyAdvert.data)
-        {
-            dispatch({ type: FORM_PREVIEW_CLEARED, prevFormId: buyAdvert.data.id});
-        }
+        dispatch({ type: CLEAR_FORM_PREVIEW });
     };
 
 export const createSellAdvert = (advert) =>
     async dispatch => {
-        let sellAdvert = await postSellAdvert(advert);
+        await postSellAdvert(advert);
         dispatch(push('/'));
         dispatch(destroyForm(SellFormName));
         dispatch({ type: CLEAR_FORM_PREVIEW });
-        if(sellAdvert && sellAdvert.data)
-        {
-            dispatch({ type: FORM_PREVIEW_CLEARED, prevFormId: sellAdvert.data.id});
-        }
     };

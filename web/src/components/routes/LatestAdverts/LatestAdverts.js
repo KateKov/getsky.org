@@ -98,5 +98,5 @@ class LatestAdverts extends React.Component {
     }
 }
 
-export default connect(({ latestAdverts, app: { skyPrices, selectedCurrency, } }) => ({ ...latestAdverts, skyPrices, selectedCurrency }),
-    ({ getAdverts }))(LatestAdverts);
+export default connect(({ latestAdverts, app: { skyPrices } }) => ({ ...latestAdverts, skyPrices }),	
+     ({ getAdverts }))(LatestAdverts);

@@ -17,6 +17,7 @@ import Messages from './Messages';
 import {
     requestAdvertDetails,
 } from './actions';
+import { Decimal } from 'decimal.js-light';
 
 
 const PanelBody = styled(Box)`
@@ -171,7 +172,7 @@ export const AdvertSummary = ({ details, countries, states, skyPrices }) => (
                 </PositionRow>
                 <SummaryPosition
                     name="Will sell:">
-                    <Focused>{advertValueToString(details.amountFrom, details.amountTo)} SKY</Focused>
+                    <Focused>{advertValueToString(details.amountFrom ? details.amountFrom : new Decimal(0), details.amountTo)} SKY</Focused>
                 </SummaryPosition>
                 <SummaryPosition
                     name="Which is approximately:">

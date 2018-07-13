@@ -16,7 +16,9 @@ import {
     getMessagesAuthors,
     selectAuthor,
     markMessageAsRead,
+     clearData, 
 } from './actions';
+
 
 const MessageInput = styled(TextArea) `
     font-size: ${props => props.theme.fontSizes[1]}px;
@@ -154,7 +156,7 @@ const MessageCount = ({ author }) =>
     </MessagesInfo>
 
 const Author = ({ backToUsers, selectedAuthor, messages, userInfo, allMessagesVisible, showAllMessages }) => {
-    const isMoreLinkShown = messages && messages.length != 0 && allMessagesVisible;
+    const isMoreLinkShown = messages && messages.length != 0 && !allMessagesVisible;
     return (<AuthorInfo mt={[2, 0, 0]}>
         {selectedAuthor
             && <BackLink onClick={backToUsers}>
@@ -463,6 +465,7 @@ export default connect(
         getMessagesAuthors,
         selectAuthor,
         markMessageAsRead,
+        clearData,
     }
 )(
     class extends React.Component {
@@ -481,6 +484,11 @@ export default connect(
                 this.readMessages(messages);
             }
         }
+
+        componentWillUnmount(){
+            this.props.clearData();
+        }
+
         readMessages = messages => {
             const { userInfo, markMessageAsRead } = this.props;
             if (messages.length <= 5) {

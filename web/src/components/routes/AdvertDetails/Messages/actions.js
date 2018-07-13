@@ -54,3 +54,9 @@ export const markMessageAsRead = messageId => async dispatch => {
 
     dispatch({ type: MARK_MESSAGE_AS_READ_RESPONSE, message: response.data });
 };
+
+export const UNMOUNTING_REQUESTED = 'UNMOUNTING_REQUESTED';
+
+export const clearData = () => dispatch => {
+    dispatch({type: UNMOUNTING_REQUESTED});
+}

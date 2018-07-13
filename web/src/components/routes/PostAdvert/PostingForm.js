@@ -35,6 +35,7 @@ const PostAdvert = ({
     theForm,
     preview,
     userCurrency,
+    userDistanceUnits,
 }) => {
     return (
         <Form onSubmit={handleSubmit} noValidate>
@@ -82,6 +83,7 @@ const PostAdvert = ({
                         name={'distance'}
                         component={FormDropdownInput}
                         options={DISTANCE_UNITS_OPTIONS}
+                        defaultUnits={userDistanceUnits}
                         parse={(v) => ({ ...v, data: v.data ? parseInt(v.data, 10) : '' })}
                         label={'How far will you travel to trade?'}
                         isRequired

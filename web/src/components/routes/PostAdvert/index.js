@@ -47,6 +47,7 @@ class PostAdvert extends React.Component {
                     skyPrices={skyPrices}
                     selectedCurrency={selectedCurrency}
                     userCurrency={userInfo.currency}
+                    userDistanceUnits={userInfo.distanceUnits}
                     enableReinitialize
                 />}
             </Container>

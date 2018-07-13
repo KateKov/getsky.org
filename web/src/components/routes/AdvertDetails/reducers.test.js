@@ -5,8 +5,9 @@ import reduce, { initialState } from './reducers';
 describe('advertDetails reducer', () => {
     describe('GET_ADVERT_DETAILS_REQUEST', () => {
         it('should clear state of reducer', () => {
+            const expectedState = { ...initialState, loading: true, };
             expect(reduce(initialState, { type: actions.GET_ADVERT_DETAILS_REQUEST }))
-                .toEqual(initialState);
+                .toEqual(expectedState);
         });
     });
 

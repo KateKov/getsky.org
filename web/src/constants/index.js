@@ -7,8 +7,8 @@ export const TRADE_OPTIONS = {
 
 export const RE_CAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY || '6LcIDlkUAAAAACqwh2NQTvvpXzGxTNrfluexYDhL';
 
-export const SellFormName = 'formPostingToSell';
-export const BuyFormName = 'formPostingToBuy';
+export const SellFormName = 'sell';
+export const BuyFormName = 'buy';
 
 export const ACCEPT_TRADE_OPTIONS = [{
     title: 'Cash in person',

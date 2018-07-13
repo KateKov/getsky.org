@@ -61,7 +61,7 @@ describe('postingsPreview actions', () => {
         it('should call postBuyAdvert api and dispatch a redux-router push action', () => {
             const expectedActions = [
                 { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/'], method: 'push' } },
-                { type: '@@redux-form/DESTROY', meta: { form: ['formPostingToBuy'] } },
+                { type: '@@redux-form/DESTROY', meta: { form: ['buy'] } },
                 { type: 'CLEAR_FORM_PREVIEW' },
             ];
             const formStub = { id: 1 };
@@ -77,7 +77,7 @@ describe('postingsPreview actions', () => {
         it('should call postSellAdvert api and dispatch a redux-router push action', () => {
             const expectedActions = [
                 { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/'], method: 'push' } },
-                { type: '@@redux-form/DESTROY', meta: { form: ['formPostingToSell'] } },
+                { type: '@@redux-form/DESTROY', meta: { form: ['sell'] } },
                 { type: 'CLEAR_FORM_PREVIEW' },
             ];
             const formStub = { id: 1 };

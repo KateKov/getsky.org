@@ -16,6 +16,7 @@ describe('reset pasword actions', () => {
         const stubDetails = { email: 'test@gmail.com', recaptcha };
         const expectedActions = [
             { type: actions.RESET_PASSWORD_REQUEST },
+            { type: '@@redux-form/DESTROY', meta: { form: ['forgotPasswordForm'] } },
             { type: actions.RESET_PASSWORD_SUCCESS },
         ];
 

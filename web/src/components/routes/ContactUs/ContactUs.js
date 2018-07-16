@@ -8,7 +8,7 @@ import Container from 'components/layout/Container';
 import { H2 } from 'components/layout/Text';
 import ContactUsForm from './ContactUsForm';
 import { submitFeedbackForm } from './actions';
-import SuccessConfirm from './SuccessConfirm';
+import SuccessConfirm from 'components/layout/SuccessConfirm';
 
 class ContactUs extends React.Component {
     state = {
@@ -29,12 +29,14 @@ class ContactUs extends React.Component {
                 this.toggleSuccessConfirmation();
             });
     }
+
     render() {
         return (
             <Container flex='1 0 auto' flexDirection="column" py={5}>
                 <SuccessConfirm
                     isOpen={this.state.successConfirmationVisible}
-                    onClose={this.toggleSuccessConfirmation}
+                    onSubmit={this.toggleSuccessConfirmation}
+                    text={"The information you submitted has been received and we will get back to you shortly."}
                 />
                 <Helmet><title>{getPageTitle('Contact us')}</title></Helmet>
                 <H2 my={[4, 6]}>Contact us</H2>

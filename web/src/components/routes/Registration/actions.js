@@ -5,6 +5,7 @@ import { registerUser } from '../../../api';
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_RESPONSE_OK = 'REGISTER_USER_RESPONSE_OK';
 export const REGISTER_USER_RESPONSE_ERROR = 'REGISTER_USER_RESPONSE_ERROR';
+export const SUCCESS_MESSAGE_CONFIRMED = 'SUCCESS_MESSAGE_CONFIRMED';
 
 export const register = (user) =>
     async dispatch => {
@@ -12,7 +13,6 @@ export const register = (user) =>
         try {
             await registerUser(user);
             dispatch({ type: REGISTER_USER_RESPONSE_OK });
-            dispatch(push('/login'));
         }
         catch (e) {
             const errors = e.response.data;
@@ -28,3 +28,8 @@ export const register = (user) =>
             }
         }
     };
+
+export const confirmSuccessModal = () =>  dispatch =>  {
+    dispatch({type: SUCCESS_MESSAGE_CONFIRMED});
+    dispatch(push('/login'));
+}

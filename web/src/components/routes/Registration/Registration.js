@@ -9,12 +9,12 @@ import { getPageTitle } from 'utils';
 import Container from 'components/layout/Container';
 import { H2 } from 'components/layout/Text';
 import RegistrationForm from './RegistrationForm';
-import { register } from './actions'
+import { register, confirmSuccessModal } from './actions'
+import SuccessConfirm from 'components/layout/SuccessConfirm';
 
 class Registration extends React.Component {
     onSubmit = (user) => {
         const { registerUser } = this.props;
-
         return registerUser(user)
             .catch(err => {
                 if(err['error'] && err['field'] && err['error'] === 'duplicate')
@@ -31,6 +31,11 @@ class Registration extends React.Component {
     render() {
         return (
             <Container flex='1 0 auto' flexDirection="column" py={5}>
+                <SuccessConfirm
+                    isOpen={this.props.successConfirmationVisible}
+                    onSubmit={this.props.confirmSuccessModal}
+                    text={"The account was created successfully!"}
+                />
                 <Helmet><title>{getPageTitle('Registration')}</title></Helmet>
                 <H2>Registration</H2>
                 <Box mt={2}>
@@ -41,4 +46,9 @@ class Registration extends React.Component {
     }
 }
 
-export default connect(null, { registerUser: register })(Registration)
+const mapStateToProps = state => ({
+    successConfirmationVisible: state.registration.successConfirmationVisible,
+});
+
+
+export default connect(mapStateToProps, { registerUser: register,  confirmSuccessModal })(Registration)

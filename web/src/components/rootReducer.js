@@ -10,7 +10,6 @@ import dashboard from './routes/Dashboard/reducers';
 import preview from './routes/PostingsPreview/reducers';
 import search from './routes/SearchAdverts/reducers';
 import app from './AppInitializer/reducers';
-import registration from './routes/Registration/reducers';
 
 const rootReducer = combineReducers({
     routing: routerReducer,
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
     preview,
     dashboard,
     search,
-    registration,
 });
 
 

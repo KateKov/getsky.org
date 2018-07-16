@@ -6,7 +6,7 @@ import FormItem from './FormItem';
 import { Tip } from '../Text';
 import TextArea from '../TextArea';
 
-const textAreaStyles = { height: 100 };
+const textAreaStyles = { height: 100, backgroundColor: 'transparent' };
 
 const FormTextArea = ({ label, tip, isRequired, description, placeholder, meta: { touched, error, warning }, input: { name, value, onChange } }) => {
     const showError = !!(touched && (error || warning));

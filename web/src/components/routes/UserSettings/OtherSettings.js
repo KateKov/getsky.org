@@ -7,7 +7,7 @@ import { Submit } from 'components/layout/Button';
 
 const distanceUnits = [
     { text: 'Kilometers', value: 'km' },
-    { text: 'Miles', value: 'ml' }
+    { text: 'Miles', value: 'mi' }
 ];
 
 export default reduxForm({ form: 'userOtherSettingsForm' })(

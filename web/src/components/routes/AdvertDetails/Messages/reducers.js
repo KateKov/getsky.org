@@ -7,6 +7,7 @@ import {
     GET_MESSAGES_RESPONSE,
     GET_MESSAGES_AUTHORS_RESPONSE,
     SELECT_AUTHOR,
+    UNMOUNTING_REQUESTED
 } from './actions';
 
 import { LOGOUT_USER } from 'components/routes/Login/actions';
@@ -36,6 +37,8 @@ export default (state = initialState, action) => {
         case SELECT_AUTHOR:
             return { ...state, selectedAuthor: action.author, state: messageStates.messages };
         case LOGOUT_USER:
+            return initialState;
+        case UNMOUNTING_REQUESTED:
             return initialState;
         default:
             return state;

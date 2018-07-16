@@ -20,9 +20,9 @@ class FormDropdownInput extends React.Component {
     }
 
     render() {
-        const { label, type, min, max, step, description, isRequired, options, input: { name, value }, meta: { error, warning, touched } } = this.props;
+        const { label, type, min, max, step, description, isRequired, options, defaultUnits, input: { name, value }, meta: { error, warning, touched } } = this.props;
         const showError = !!(touched && (error || warning));
-
+        const unit = defaultUnits ? defaultUnits : '';
         return (
             <FormItem name={name} label={label} isRequired={isRequired} description={description} showError={showError} error={error}>
                 <Flex>
@@ -34,7 +34,7 @@ class FormDropdownInput extends React.Component {
                             name={`${name}_input_options`}
                             options={options}
                             value={value ? value.prefix : ''}
-                            input={{ value: value ? value.prefix : '' }}
+                            input={{ value: value ? value.prefix : unit }}
                             onChange={this.onChangeDropdownValue}
                             error={showError} />
                     </Box>

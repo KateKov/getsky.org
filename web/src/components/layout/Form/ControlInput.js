@@ -7,6 +7,7 @@ const ControlInput = styled.input`
     padding: ${props => props.theme.space[1]}px ${props => props.theme.space[2]}px;
     border-width: 1px;
     border-style: solid;
+    line-height: ${props => props.theme.controlHeight}px;
     border-color: ${props => getBorderColor(props)};
     background: transparent;
     font-family: ${props => props.theme.fontLight};

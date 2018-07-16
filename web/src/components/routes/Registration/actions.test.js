@@ -28,13 +28,12 @@ describe('register actions', () => {
 
         it('should navigate to login after modal was confirmed', () => {
             const expectedActions = [
-                { type: actions.SUCCESS_MESSAGE_CONFIRMED },
                 { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/login'], method: 'push' } }
             ];
 
             api.registerUser = apiStubs.registerUserOk;
             const store = mockStore({})
-            return store.dispatch(actions.confirmSuccessModal())
+            return store.dispatch(actions.goToLoginPage())
                 .then(() => expect(store.getActions()).toEqual(expectedActions));
         });
 

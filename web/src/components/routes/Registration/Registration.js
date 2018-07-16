@@ -9,13 +9,26 @@ import { getPageTitle } from 'utils';
 import Container from 'components/layout/Container';
 import { H2 } from 'components/layout/Text';
 import RegistrationForm from './RegistrationForm';
-import { register, confirmSuccessModal } from './actions'
+import { register, goToLoginPage } from './actions'
 import SuccessConfirm from 'components/layout/SuccessConfirm';
 
 class Registration extends React.Component {
+    state = {
+        successConfirmationVisible: false,
+    }
+
+    toggleSuccessConfirmation = () => {
+        this.setState(() => ({
+            successConfirmationVisible: !this.state.successConfirmationVisible
+        }));
+    }
+
     onSubmit = (user) => {
         const { registerUser } = this.props;
         return registerUser(user)
+            .then(() => {
+                this.toggleSuccessConfirmation();
+            })
             .catch(err => {
                 if(err['error'] && err['field'] && err['error'] === 'duplicate')
                 {
@@ -25,15 +38,20 @@ class Registration extends React.Component {
                 }
   
                 throw new SubmissionError(err)
-            });
+            });       
+    }
+
+    confirmSuccessModal = () => {
+        this.toggleSuccessConfirmation();
+        this.props.goToLoginPage();
     }
 
     render() {
         return (
             <Container flex='1 0 auto' flexDirection="column" py={5}>
                 <SuccessConfirm
-                    isOpen={this.props.successConfirmationVisible}
-                    onSubmit={this.props.confirmSuccessModal}
+                    isOpen={this.state.successConfirmationVisible}
+                    onSubmit={this.confirmSuccessModal}
                     text={"The account was created successfully!"}
                 />
                 <Helmet><title>{getPageTitle('Registration')}</title></Helmet>
@@ -46,9 +64,4 @@ class Registration extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    successConfirmationVisible: state.registration.successConfirmationVisible,
-});
-
-
-export default connect(mapStateToProps, { registerUser: register,  confirmSuccessModal })(Registration)
+export default connect(null, { registerUser: register,  goToLoginPage })(Registration)

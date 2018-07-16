@@ -5,7 +5,6 @@ import { registerUser } from '../../../api';
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_RESPONSE_OK = 'REGISTER_USER_RESPONSE_OK';
 export const REGISTER_USER_RESPONSE_ERROR = 'REGISTER_USER_RESPONSE_ERROR';
-export const SUCCESS_MESSAGE_CONFIRMED = 'SUCCESS_MESSAGE_CONFIRMED';
 
 export const register = (user) =>
     async dispatch => {
@@ -29,7 +28,6 @@ export const register = (user) =>
         }
     };
 
-export const confirmSuccessModal = () =>  async dispatch =>  {
-    dispatch({type: SUCCESS_MESSAGE_CONFIRMED});
+export const goToLoginPage = () =>  async dispatch =>  {
     dispatch(push('/login'));
 }

@@ -12,7 +12,6 @@ export const register = (user) =>
         try {
             await registerUser(user);
             dispatch({ type: REGISTER_USER_RESPONSE_OK });
-            dispatch(push('/login'));
         }
         catch (e) {
             const errors = e.response.data;
@@ -28,3 +27,7 @@ export const register = (user) =>
             }
         }
     };
+
+export const goToLoginPage = () =>  async dispatch =>  {
+    dispatch(push('/login'));
+}

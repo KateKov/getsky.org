@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex, Box } from 'grid-styled';
 
-import { Button } from 'components/layout/Button';
-import { ConfirmModal } from 'components/layout/Modal';
-import { H3 } from 'components/layout/Text';
+import { Button } from '../Button';
+import { ConfirmModal } from '../Modal';
+import { H3 } from '../Text';
 
 const style = {
     content: {
@@ -17,22 +17,22 @@ const style = {
     }
 };
 
-const Footer = ({ onClose }) => (
+const Footer = ({ onSubmit }) => (
     <Flex justifyContent={'flex-end'}>
         <Box mr={2}>
-            <Button text={'OK'} onClick={onClose} primary />
+            <Button text={'OK'} onClick={onSubmit} primary />
         </Box>
     </Flex>
 )
 
-const SuccessConfirm = ({ isOpen, onClose }) => {
+const SuccessConfirm = ({ isOpen, onSubmit, text }) => {
     return (
         <ConfirmModal
             isOpen={isOpen}
             style={style}
-            footer={<Footer onClose={onClose} />}>
+            footer={<Footer onSubmit={onSubmit} />}>
             <Box pb={6}>
-                <H3>The information you submitted has been received and we will get back to you shortly.</H3>
+                <H3>{text}</H3>
             </Box>
         </ConfirmModal>
     );
@@ -40,7 +40,7 @@ const SuccessConfirm = ({ isOpen, onClose }) => {
 
 SuccessConfirm.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired
 };
 
 export default SuccessConfirm;

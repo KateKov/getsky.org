@@ -3,10 +3,21 @@ import { resetPasswordRequest, recoverPassword } from 'api/index';
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
+
+const destroyForm = () => ({
+    type: '@@redux-form/DESTROY',
+    meta: {
+        form: [
+            'forgotPasswordForm',
+        ]
+    }
+});
+
 export const resetPassword = (email, recaptcha) => async dispatch => {
     dispatch({ type: RESET_PASSWORD_REQUEST });
     try {
         await resetPasswordRequest({ email, recaptcha });
+        dispatch(destroyForm());
         dispatch({ type: RESET_PASSWORD_SUCCESS });
     } catch (e) {
         dispatch({ type: RESET_PASSWORD_FAILED });

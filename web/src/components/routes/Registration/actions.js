@@ -29,7 +29,7 @@ export const register = (user) =>
         }
     };
 
-export const confirmSuccessModal = () =>  dispatch =>  {
+export const confirmSuccessModal = () =>  async dispatch =>  {
     dispatch({type: SUCCESS_MESSAGE_CONFIRMED});
     dispatch(push('/login'));
 }

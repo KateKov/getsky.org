@@ -14,16 +14,27 @@ describe('register actions', () => {
     describe('register', () => {
         const stubRegisterForm = { }
 
-        it('should dispatch REGISTER_USER_RESPONSE_OK and navigate to login when response OK', () => {
+        it('should dispatch REGISTER_USER_RESPONSE_OK when response OK', () => {
             const expectedActions = [
                 { type: actions.REGISTER_USER_REQUEST },
                 { type: actions.REGISTER_USER_RESPONSE_OK },
-                { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/login'], method: 'push' } }
             ];
 
             api.registerUser = apiStubs.registerUserOk;
             const store = mockStore({})
             return store.dispatch(actions.register(stubRegisterForm))
+                .then(() => expect(store.getActions()).toEqual(expectedActions));
+        });
+
+        it('should navigate to login after modal was confirmed', () => {
+            const expectedActions = [
+                { type: actions.SUCCESS_MESSAGE_CONFIRMED },
+                { type: '@@router/CALL_HISTORY_METHOD', payload: { args: ['/login'], method: 'push' } }
+            ];
+
+            api.registerUser = apiStubs.registerUserOk;
+            const store = mockStore({})
+            return store.dispatch(actions.confirmSuccessModal())
                 .then(() => expect(store.getActions()).toEqual(expectedActions));
         });
 

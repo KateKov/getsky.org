@@ -15,7 +15,7 @@ export const register = (user) =>
         }
         catch (e) {
             const errors = e.response.data;
-            switch(e.response.status){
+            switch (e.response.status) {
                 case 400:
                     dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
                     const formErrors = {};
@@ -23,11 +23,12 @@ export const register = (user) =>
                     return Promise.reject(formErrors);
                 case 409:
                     dispatch({ type: REGISTER_USER_RESPONSE_ERROR });
-                    return Promise.reject(errors);    
+                    return Promise.reject(errors);
+                default:
             }
         }
     };
 
-export const goToLoginPage = () =>  async dispatch =>  {
+export const goToLoginPage = () => async dispatch => {
     dispatch(push('/login'));
 }

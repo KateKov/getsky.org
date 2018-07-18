@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Flex } from 'grid-styled';
 import media from '../../../media';
-import { rem } from 'polished';
 
 const Wrapper = styled.div`
   display: flex;

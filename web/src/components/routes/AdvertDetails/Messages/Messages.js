@@ -156,7 +156,7 @@ const MessageCount = ({ author }) =>
     </MessagesInfo>
 
 const Author = ({ backToUsers, selectedAuthor, messages, userInfo, allMessagesVisible, showAllMessages }) => {
-    const isMoreLinkShown = messages && messages.length != 0 && !allMessagesVisible;
+    const isMoreLinkShown = messages && messages.length !== 0 && !allMessagesVisible;
     return (<AuthorInfo mt={[2, 0, 0]}>
         {selectedAuthor
             && <BackLink onClick={backToUsers}>

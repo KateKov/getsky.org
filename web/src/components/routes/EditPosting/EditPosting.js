@@ -44,16 +44,15 @@ class EditAdvert extends React.Component {
         const { advertDetails, saveAdvert, push } = this.props;
         const { value } = form.pricePerCoin;
         const price = form.pricePerCoin.type === PriceType.PERCENT
-            ? { percentageAdjustment: value, fixedPrice: null, }
-            : { percentageAdjustment: null, fixedPrice: value, };
-
+            ? { percentageAdjustment: value, fixedPrice: null, currency: form.pricePerCoin.currency }
+            : { percentageAdjustment: null, fixedPrice: value, currency: form.pricePerCoin.currency };
         const advert = {
             additionalInfo: form.additionalInfo,
             amountFrom: form.cashAmount.from,
             amountTo: form.cashAmount.to === '' ? undefined : form.cashAmount.to,
             city: form.city,
             countryCode: form.countryCode,
-            currency: 'USD',
+            currency: form.currency,
             id: advertDetails.id,
             postalCode: form.postalCode,
             stateCode: form.stateCode,
@@ -71,7 +70,6 @@ class EditAdvert extends React.Component {
 
     render() {
         const { countries, states, userInfo, skyPrices, advertDetails } = this.props;
-
         return (
             <Container flex='1 0 auto' flexDirection='column' py={5}>
                 <Helmet>
@@ -86,6 +84,7 @@ class EditAdvert extends React.Component {
                     countries={countries}
                     states={states}
                     skyPrices={skyPrices}
+                    selectedCurrency={advertDetails.currency}
                     onSubmit={this.onSubmit}
                     user={userInfo}
                     advertType={advertDetails.type === ADVERT_BUY ? AdvertType.BUY : AdvertType.SELL} 

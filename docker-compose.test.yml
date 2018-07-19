@@ -67,13 +67,3 @@ services:
       EMAILPASS: ${MAIL_PASSWORD}
     ports:
       - "25:25"
-  currency-cron:
-    image: morbz/docker-cron
-    container_name: "currency-cron"
-    depends_on: 
-      - "mysql"
-    environment:
-      - CRON_HOUR=24 * * * * root /srv/currencies -mysql="${TRADE_MYSQL}"
-      - TRADE_MYSQL="${TRADE_MYSQL}"
-    volumes:
-      - ./currencies:/srv/currencies

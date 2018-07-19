@@ -76,6 +76,12 @@ class FormCoinPriceInput extends React.Component {
         const { input: { value, onChange } } = this.props;
         onChange({ value: value.value, type: mode, currency: value.currency });
     };
+
+    setCurrency = () => {
+        const { input: { value, onChange }, selectedCurrency } = this.props;
+        onChange({ value: value.value, type: value.type, currency: selectedCurrency });
+    }
+
     onChange = e => {
         const { input: { value, onChange } } = this.props;
         const val = e.target.value;
@@ -83,18 +89,24 @@ class FormCoinPriceInput extends React.Component {
 
         onChange({ value: newValue, type: value.type, currency: value.currency });
     };
+
     onChangeCurrency = (e) => {
         const { input: { value, onChange } } = this.props;
         const currency = e.target.value;
         onChange({ ...value, currency });
     };
+
     render() {
         const { isRequired, input: { name, value }, meta: { error, warning, touched }, skyPrices } = this.props;
         const showError = !!(touched && (error || warning));
-        const skyPrice = skyPrices[value.currency];
         if(!value){	
             this.setInitValue();	
         }
+        else if(!value.currency){
+            this.setCurrency();
+        }
+
+        const skyPrice = skyPrices[value.currency];
 
         return (
             <FormItem name={name} label={<Label skyPrice={skyPrice} currency={value.currency} />} isRequired={isRequired} showError={showError} error={error}>

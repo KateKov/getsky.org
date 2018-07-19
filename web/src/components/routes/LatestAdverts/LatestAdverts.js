@@ -45,14 +45,14 @@ export const buyAdvertsColumns = [
     { name: 'Seller' },
     { name: 'Will sell' },
     { name: 'Trade options' },
-    { name: 'Expired', style: { width: '170px' } },
+    { name: 'Expires', style: { width: '170px' } },
 ];
 
 export const sellAdvertsColumns = [
     { name: 'Buyer' },
     { name: 'Will buy' },
     { name: 'Trade options' },
-    { name: 'Expired', style: { width: '170px' } },
+    { name: 'Expires', style: { width: '170px' } },
 ];
 
 class LatestAdverts extends React.Component {

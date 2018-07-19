@@ -73,10 +73,10 @@ URL: /api/status
 
 Response:
 ```
-{"dbStatus":"OK","coinMarketCapStatus":"OK. Last updated at 2018-07-06 12:59:28.719496435 +0000 UTC m=+97931.216830293"}
+{"dbStatus":"OK","coinMarketCapStatus":"OK","marketCapLastUpdatedAt":"2018-07-19T07:58:42Z"}
 ```
 
 Error response:
 ```
-{"dbStatus":"error_text","coinMarketCapStatus":"OK. Last updated at 2018-07-06 12:59:28.719496435 +0000 UTC m=+97931.216830293"}
+{"dbStatus":"error_text","coinMarketCapStatus":"OK","marketCapLastUpdatedAt":"2018-07-19T07:58:42Z"}
 ```

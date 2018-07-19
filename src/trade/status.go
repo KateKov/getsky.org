@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/skycoin/getsky.org/src/util/httputil"
 )
 
 type statusResponse struct {
-	DbStatus            string `json:"dbStatus"`
-	CoinMarketCapStatus string `json:"coinMarketCapStatus"`
+	DbStatus               string `json:"dbStatus"`
+	CoinMarketCapStatus    string `json:"coinMarketCapStatus"`
+	MarketCapLastUpdatedAt string `json:"marketCapLastUpdatedAt"`
 }
 
 // StatusHandler shows current status of the system
@@ -24,8 +26,9 @@ func StatusHandler(s *HTTPServer) httputil.APIHandler {
 			dbStatus = fmt.Sprintf("%s", err)
 		}
 		status := &statusResponse{
-			DbStatus:            dbStatus,
-			CoinMarketCapStatus: fmt.Sprintf("OK. Last updated at %s", (*s.skycoinPrices).GetLastUpdateTime()),
+			DbStatus:               dbStatus,
+			CoinMarketCapStatus:    "OK",
+			MarketCapLastUpdatedAt: (*s.skycoinPrices).GetLastUpdateTime().UTC().Format(time.RFC3339),
 		}
 
 		return json.NewEncoder(w).Encode(status)

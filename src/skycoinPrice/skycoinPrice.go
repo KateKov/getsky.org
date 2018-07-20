@@ -10,23 +10,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shopspring/decimal"
 	"github.com/skycoin/getsky.org/src/currencies"
 )
 
 const refreshInterval = time.Minute * 5
-const baseCurrency = "USD"
 
 // Service provides a logic of retrieving Skycoin prices
 type Service interface {
-	GetSkycoinPrice(currency string) (*decimal.Decimal, error)
+	GetSkycoinPrice(currency string) (string, error)
 	GetAllCurrencies() []string
 	GetLastUpdateTime() time.Time
 }
 
 // SkycoinPrice represents a cached value of the skycoin price
 type SkycoinPrice struct {
-	price decimal.Decimal
+	price string
 }
 
 // NewSkycoinPrice creates a new instance of SkycoinPrice
@@ -63,28 +61,25 @@ type SkycoinPrices struct {
 	quit           chan os.Signal
 	lastUpdateTime time.Time
 
-	curAPI currencies.CurrencyRatesGetter
-
 	currencies *currencies.Currencies
 }
 
 // NewSkycoinPrices creates a new instance of the SkycoinPrices
-func NewSkycoinPrices(currencies currencies.Currencies, curAPI currencies.CurrencyRatesGetter) *SkycoinPrices {
+func NewSkycoinPrices(currencies currencies.Currencies) *SkycoinPrices {
 	return &SkycoinPrices{
 		prices:     make(map[string]*SkycoinPrice),
 		stop:       make(chan string, 1),
 		quit:       make(chan os.Signal, 1),
 		currencies: &currencies,
-		curAPI:     curAPI,
 	}
 }
 
 // GetSkycoinPrice returns a skycon price
-func (prices SkycoinPrices) GetSkycoinPrice(currency string) (*decimal.Decimal, error) {
+func (prices SkycoinPrices) GetSkycoinPrice(currency string) (string, error) {
 	if val, exists := prices.prices[currency]; exists {
-		return &val.price, nil
+		return val.price, nil
 	}
-	return nil, errors.New("Specified currency doesn't exists")
+	return "", errors.New("Specified currency doesn't exists")
 }
 
 // GetAllCurrencies returns all currencies codes
@@ -101,43 +96,24 @@ func (prices SkycoinPrices) GetLastUpdateTime() time.Time {
 	return prices.lastUpdateTime
 }
 
-func updatePrices(prices *SkycoinPrices) {
+func updatePrices(prices *SkycoinPrices, currenciesProvider *currencies.Currencies) {
 rootLoop:
 	for {
-		currencies, err := (*prices.currencies).GetAllCurrencies()
-
+		currencies, err := (*currenciesProvider).GetAllCurrencies()
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
-
-		baseCurrencyPrice, err := getNewPrice(baseCurrency)
-		if err != nil {
-			continue
-		}
-		parsedPrice, err := decimal.NewFromString(baseCurrencyPrice)
-		if err != nil {
-			continue
-		}
-		prices.prices[baseCurrency] = &SkycoinPrice{price: parsedPrice}
-
-		curStr := make([]string, len(currencies))
-		for i, cur := range currencies {
-			curStr[i] = cur.CurrencyCode
-		}
-
-		rates, err := prices.curAPI(baseCurrency, curStr)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		for _, r := range rates {
-			if r.Currency == baseCurrency {
+		for _, c := range currencies {
+			resp, err := getNewPrice(c.CurrencyCode)
+			if err != nil {
 				continue
 			}
-			prices.prices[r.Currency] = &SkycoinPrice{price: parsedPrice.Mul(r.Rate)}
+			if v, exists := prices.prices[c.CurrencyCode]; exists {
+				v.price = resp
+			}
+			prices.prices[c.CurrencyCode] = &SkycoinPrice{price: resp}
 		}
-
 		prices.lastUpdateTime = time.Now()
 		select {
 		case <-prices.stop:
@@ -150,7 +126,7 @@ rootLoop:
 
 // StartUpdatingCycle starts cycle that requests prices from the remote server
 func (prices *SkycoinPrices) StartUpdatingCycle() {
-	go updatePrices(prices)
+	go updatePrices(prices, prices.currencies)
 
 	go func() {
 		<-prices.quit

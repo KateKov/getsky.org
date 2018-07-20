@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/namsral/flag"
 	"github.com/skycoin/getsky.org/db"
-	"github.com/skycoin/getsky.org/src/currencies"
 	"github.com/skycoin/getsky.org/src/mail"
 	"github.com/skycoin/getsky.org/src/skycoinPrice"
 	"github.com/skycoin/getsky.org/src/trade"
@@ -33,14 +32,13 @@ func main() {
 		panic(err.Error())
 	}
 
-	curs := db.NewCurrenciesStorage(sqlDb)
+	currencies := db.NewCurrenciesStorage(sqlDb)
 	auth := db.NewAuthenticator(sqlDb)
 	storage := db.NewStorage(sqlDb)
 	users := db.NewUsers(sqlDb)
 	geo := db.NewGeo(sqlDb)
 	messages := db.NewMessages(sqlDb)
-
-	skycoinPrices := skycoinPrice.NewSkycoinPrices(curs, currencies.CurrencyRateFromConverterAPI)
+	skycoinPrices := skycoinPrice.NewSkycoinPrices(currencies)
 	mailer := mail.NewPostfixMailer(*mailHost, *mailUsername, *mailPassword, *feedbackAddress, *mailFromAddress, log)
 	skycoinPricesInterface := skycoinPrice.Service(skycoinPrices)
 

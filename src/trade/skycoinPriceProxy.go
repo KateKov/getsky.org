@@ -26,7 +26,7 @@ func GetSkycoinPrice(s *HTTPServer) httputil.APIHandler {
 			if err != nil {
 				return err
 			}
-			response[i] = skycoinPriceResponse{Code: c, Price: cResponse.String()}
+			response[i] = skycoinPriceResponse{Code: c, Price: cResponse}
 		}
 
 		return json.NewEncoder(w).Encode(response)

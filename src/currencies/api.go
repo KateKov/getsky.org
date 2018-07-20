@@ -49,7 +49,6 @@ func converterAPI(base string, target string) (decimal.Decimal, error) {
 	var objmap map[string]map[string]decimal.Decimal
 	err = json.Unmarshal(body, &objmap)
 	if err != nil {
-		fmt.Println("converterAPI >", target, string(body))
 		return decimal.Zero, err
 	}
 

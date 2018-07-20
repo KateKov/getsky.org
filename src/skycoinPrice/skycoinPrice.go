@@ -14,6 +14,7 @@ import (
 )
 
 const refreshInterval = time.Minute * 5
+const apiRequestsLimitPerMinute = 30
 
 // Service provides a logic of retrieving Skycoin prices
 type Service interface {
@@ -106,6 +107,7 @@ rootLoop:
 		}
 		for _, c := range currencies {
 			resp, err := getNewPrice(c.CurrencyCode)
+			time.Sleep((apiRequestsLimitPerMinute / 60) * time.Second)
 			if err != nil {
 				continue
 			}

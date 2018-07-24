@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { initApp, getCountries, getStates, getUserInfo, requestSkycoinPrice } from './actions'
+import { initApp, getCountries, getStates, getUserInfo, requestSkycoinPrice, setDefaultCurrency } from './actions'
 
 class AppInitializer extends React.Component {
     componentWillMount() {
         this.props.initApp();
+        this.props.setDefaultCurrency();
         this.props.getCountries();
         this.props.getStates();
         this.props.getUserInfo();
@@ -23,4 +24,5 @@ export default connect(({ app }) => ({ app }), {
     getStates,
     getUserInfo,
     requestSkycoinPrice,
+    setDefaultCurrency,
 })(AppInitializer)

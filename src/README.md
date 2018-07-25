@@ -65,3 +65,8 @@ Then access API at `localhost:3000/api` where 3000 is default gin proxy port
 - Check logs: ```cat /var/log/mail.log```
 - Delete all messages from queue: ```postsuper -d ALL```
 - Check queue with mails: ```mailq```
+
+## Integration tests
+1. Test initializer is in the ./trade/http_test.go (TestMain function)
+2. All test suits files name must end with _test.go.
+3. All test functions must start with ```TestXXX(t *testing.T)```

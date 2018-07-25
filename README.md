@@ -52,6 +52,9 @@ $ docker exec backend sh -c "cd /usr/local/go/src/github.com/skycoin/getsky.org/
 
 **Please note:** `./.nginx/vhost.d/proxy.test.conf` and `./.nginx/vhost.d/cert.test.conf` Nginx configuration files must be used instead of proxy.conf for manual installation to support SSL. Also, the path to the certificates issued by certbot must be specified in the proxy.test.conf configuration file.
 
+## Client app development
+Information about client app development is available [here](./web/README.md)
+
 ## Health Check API
 URL: /api/status
 

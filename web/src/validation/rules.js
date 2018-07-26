@@ -70,6 +70,9 @@ export const rangedRequired = value => {
 export const ranged = value =>
     ((value.to === undefined || value.mode === 'SINGLE_MODE') || (value.to >= value.from)) ? undefined : 'First value has to be bigger or same';
 
+export const rangedDecimal = value => 
+    ((value.to === undefined || value.mode === 'SINGLE_MODE') || (value.to.d[0] >= value.from.d[0])) ? undefined : 'Second value has to be bigger or same';
+
 export const rangedMin = min => value =>
     (value.to === undefined && (value.from < min || value.to < min)) ? `The value can't be less than ${min}` : undefined;
 

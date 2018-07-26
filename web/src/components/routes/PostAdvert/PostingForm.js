@@ -7,7 +7,7 @@ import get from 'lodash/get';
 
 import { FormRangedSingleInput, FormCheckboxGroup, FormDropdownInput, FormGroup } from 'components/layout/Form';
 import { Button } from 'components/layout/Button';
-import { required, min, max, ranged, rangedRequired, rangedMin, rangedMax } from 'validation/rules';
+import { required, min, max, rangedDecimal, rangedRequired, rangedMin, rangedMax } from 'validation/rules';
 import LocationFormGroup from './LocationFormGroup';
 import AdditionalInformationSample from './AdditionalInformationSample';
 import FormCoinPriceInput from './FormCoinPriceInput';
@@ -54,7 +54,7 @@ const PostAdvert = ({
                                 mode
                             };
                         }}
-                        validate={[rangedRequired, ranged, rMin, rMax]}
+                        validate={[rangedRequired, rangedDecimal, rMin, rMax]}
                         min={RANGED_MIN}
                         max={RANGED_MAX}
                         step={0.01}

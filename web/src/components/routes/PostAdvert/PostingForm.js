@@ -95,7 +95,7 @@ const PostAdvert = ({
                 <LocationFormGroup
                     states={states}
                     countries={countries}
-                    showStates={countryInFormHasStates(theForm)}
+                    showStates={countryInFormHasStates(theForm[advertType])}
                 />
                 <AdditionalInformationSample />
                 <Button type="submit" text={editMode ? 'Save' : 'Next'} primary />
@@ -104,6 +104,6 @@ const PostAdvert = ({
     );
 }
 
-export default connect(({ form, preview }) => ({ theForm: form.postAdvert, preview }))(
+export default connect(({ form, preview }) => ({ theForm: form, preview }))(
     reduxForm({ destroyOnUnmount: false })(PostAdvert)
 );

@@ -96,6 +96,9 @@ class SearchAdverts extends React.Component {
     }
 
     handleFiltersChange = (values, dispatch, props, previousValues) => {
+        if (previousValues.stateCode && !values.stateCode) {
+            values.stateCode = '';
+        }
         const filters = _.pickBy(_.merge(previousValues, values), el => !!el);
         const queryString = qs.stringify(filters);
         dispatch(push({

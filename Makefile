@@ -47,7 +47,7 @@ lint: ## Run linters. Use make install-linters first.
 	gometalinter --deadline=3m -j 2 --disable-all --tests --vendor \
 		-E deadcode \
 		-E errcheck \
-		-E gas \
+		-E gosec \
 		-E goconst \
 		-E gofmt \
 		-E goimports \

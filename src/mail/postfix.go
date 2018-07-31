@@ -1,7 +1,9 @@
 package mail
 
 import (
+	"crypto/tls"
 	"net/smtp"
+	"net/url"
 
 	"github.com/sirupsen/logrus"
 )
@@ -33,14 +35,37 @@ func (m PostfixMailer) SendFeedback(l *Letter) error {
 
 // SendMail sends a letter
 func (m PostfixMailer) SendMail(l *Letter) error {
-	msg := getBody(l, m.from)
-
-	client, err := smtp.Dial(m.host)
+	host, err := url.Parse("//" + m.host)
 	if err != nil {
-		m.log.Errorln("PostfixMailer.SendMail > (smtp.Dial): ", m.host, "\n", err)
-		return nil
+		m.log.Errorln("PostfixMailer.SendMail > (url.Parse): ", m.host, "\n", err)
+		return err
 	}
-	// Avoid failing build because of error check
+
+	msg := getBody(l, m.from)
+	tlsconfig := &tls.Config{
+		InsecureSkipVerify: false,
+		ServerName:         host.Hostname(),
+	}
+
+	conn, err := tls.Dial("tcp", m.host, tlsconfig)
+	if err != nil {
+		m.log.Errorln("PostfixMailer.SendMail > (tls.Dial): ", m.host, tlsconfig, "\n", err)
+		return err
+	}
+
+	client, err := smtp.NewClient(conn, host.Hostname())
+	if err != nil {
+		m.log.Errorln("PostfixMailer.SendMail > (smtp.NewClient): ", conn, host.Hostname(), "\n", err)
+		return err
+	}
+
+	auth := smtp.CRAMMD5Auth(m.username, m.password)
+
+	if err = client.Auth(auth); err != nil {
+		m.log.Errorln("PostfixMailer.SendMail > (smtp.CRAMMD5Auth): ", m.username, "\n", err)
+		return err
+	}
+
 	defer func() {
 		if err := client.Close(); err != nil {
 			return

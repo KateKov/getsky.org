@@ -7,7 +7,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// GmailMailer is a mail service that allows to send emails to gmail service
+// GmailMailer is a mail service that allows to send emails to gmail service (both feedback and forgot password)
+// SWH: this is just a STMP client handler - it should be able to handle any email (not just gmail). It curently works for vidahost or any plain auth server.GmailMailer
+// Also note that this function is "injected" into the httpserver in trade.go.
+// Ideally, there should be one "Mailer", which, based on the mail server parameters in settings, can send to any mail server.
 type GmailMailer struct {
 	MailerInfo
 }

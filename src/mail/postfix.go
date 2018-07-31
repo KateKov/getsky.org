@@ -43,7 +43,7 @@ func (m PostfixMailer) SendMail(l *Letter) error {
 
 	msg := getBody(l, m.from)
 	tlsconfig := &tls.Config{
-		InsecureSkipVerify: true,
+		InsecureSkipVerify: false,
 		ServerName:         host.Hostname(),
 	}
 

@@ -42,7 +42,7 @@ func main() {
 
 	// SWH: NewPostfixMailer does not work with gmail or vidahost.  It is not correct to hard code external evironment dependencies in source.
 	// A better solution is to have one mail handing client which works with either service based on the settings/paramenters.  E.g. add a param "usetls" or similar.
-	// I have switched it back to useing the original "gmail" smtp handler, which also works for vidahost.  This will break the current postfix docker setup. The solution is to either:
+	// I have switched it back to using the original "gmail" smtp handler, which also works for vidahost.  This will break the current postfix docker setup. The solution is to either:
 	//   a) change the docker postfix server to use plain auth (in the postfix server settings)
 	//   b) add features to the existing mail service client code to handle both (e.g. do something different baserd on port, or a new settting)
 	//	mailer := mail.NewPostfixMailer(*mailHost, *mailUsername, *mailPassword, *feedbackAddress, *mailFromAddress, log)

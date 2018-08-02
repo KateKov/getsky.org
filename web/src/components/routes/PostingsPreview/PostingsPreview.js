@@ -19,9 +19,6 @@ const ExchangeRateWarningBuy = () => (
                 The amount of SKY shown in the advert may change with the exchange rate of USD.
             </B>
             The actual amount of SKY will need to be determined between the seller and buyer.
-            <P>
-                <B>Posting this seller advert will deduct one credit from your balance.</B>
-            </P>
         </Warning>
     </Box>
 );

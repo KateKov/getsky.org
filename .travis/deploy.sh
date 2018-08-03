@@ -11,38 +11,8 @@ ssh-add .travis/id_rsa.getsky.deploy # add the private key to SSH
 # prevent authenticity confirmations 
 ssh-keyscan $IP >> ~/.ssh/known_hosts
 
-# shut down any currently running containers to prevent file locking when pushing new version
-ssh $RUN_USER@$IP -p $PORT <<EOF
-  cd $DEPLOY_DIR
-  docker-compose kill
-EOF
-
-# push latest changes to test server's remote repo
-git config --global push.default matching
-git remote add deploy ssh://$RUN_USER@$IP:$PORT$DEPLOY_DIR
-git push deploy develop
-
-# start updated services
-ssh $RUN_USER@$IP -p $PORT <<EOF
-  export RECAPTCHA_SECRET=${RECAPTCHA_SECRET}
-  export MAIL_USERNAME=${MAIL_USERNAME}
-  export MAIL_PASSWORD=${MAIL_PASSWORD}
-  export REACT_APP_RECAPTCHA_KEY=${REACT_APP_RECAPTCHA_KEY}
-  export FEEDBACK_ADDRESS=${FEEDBACK_ADDRESS}
-  export MAIL_HOST=${MAIL_HOST}
-  export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  export MYSQL_USER=${MYSQL_USER}
-  export MYSQL_PASSWORD=${MYSQL_PASSWORD}
-  export TRADE_MYSQL="${TRADE_MYSQL}"
-  export TRADE_MYSQL_MIGRATIONS="${TRADE_MYSQL_MIGRATIONS}"
-  cd $DEPLOY_DIR
-  sudo service docker restart # restart docker service to prevent "timeout" errors (https://github.com/docker/compose/issues/3633#issuecomment-254194717)
-  make run-test-docker
-  # run migrations
-  cd ./db
-  bash ./migrate.sh "${TRADE_MYSQL_MIGRATIONS}"
-  cd ..
-
-EOF
+# start deployment process
+# ssh $RUN_USER@$IP -p $PORT <<EOF
+# EOF
 
 # ssh-agent -k

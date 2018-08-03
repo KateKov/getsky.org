@@ -1,12 +1,42 @@
 .DEFAULT_GOAL := help
-.PHONY: trade test-api lint check db-schema stop-docker build-web run-web run-mysql run-docker help run-test-docker build-currency-feed
+.PHONY: trade test-api lint check db-schema stop-docker build-web run-web run-mysql run-docker help run-test-docker build-currency-feed build-backend
 
 build-web: ## Restores packages and builds web app
 	cd web; yarn install
 	cd web; npm run build
 
+build-backend: ## Builds backend app
+	go build ./cmd/trade/trade.go
+
 build-currency-feed: ## Builds app that pulls currency rates
 	go build cmd/currencies/currencies.go
+
+build: build-web build-backend ## Builds whole app
+
+prepare-package: ## Copies all artifacts to the package folder
+	rm -rf ./package 
+	mkdir ./package
+	mkdir ./package/backend
+	mkdir ./package/client
+	mkdir ./package/migrations
+	cp -r ./web/build/** ./package/client
+	cp ./trade ./package/backend
+	cp ./cmd/trade/example.conf ./package/backend/default.conf
+	cp -r ./db/schema/** ./package/migrations
+
+check-version: ## Check if $VERSION env variable has value
+ifeq ($(VERSION),)
+	echo "VERSION env variable must be set"; 
+	exit -1;
+endif
+
+zip-package: ## Creates archives with build artifacts
+	cd ./package/backend; tar -zcvf ../backend-${VERSION}.tar.gz ./**; cd ../client; tar -zcvf ../client-${VERSION}.tar.gz ./**; cd ../migrations; tar -zcvf ../migrations-${VERSION}.tar.gz ./**
+	rm -rf ./package/backend
+	rm -rf ./package/client
+	rm -rf ./package/migrations
+
+package: check-version build prepare-package zip-package ## Builds and packages all artifacts
 
 run-web: ## Runs web app locally
 	cd web; npm start

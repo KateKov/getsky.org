@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import { getPageTitle, AdvertType, getAdvertTypeFromLocation } from 'utils';
 import Container from 'components/layout/Container';
 import { BackIcLink } from 'components/layout/Links';
-import { H1, B, P } from 'components/layout/Text';
+import { H1, B } from 'components/layout/Text';
 import { Warning } from 'components/layout/Alerts';
 import FormPreview from './FormPreview';
 import { createBuyAdvert, createSellAdvert } from './actions';

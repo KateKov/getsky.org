@@ -31,10 +31,8 @@ ifeq ($(VERSION),)
 endif
 
 zip-package: ## Creates archives with build artifacts
-	cd ./package/backend; tar -zcvf ../backend-${VERSION}.tar.gz ./**; cd ../client; tar -zcvf ../client-${VERSION}.tar.gz ./**; cd ../migrations; tar -zcvf ../migrations-${VERSION}.tar.gz ./**
-	rm -rf ./package/backend
-	rm -rf ./package/client
-	rm -rf ./package/migrations
+	cd ./package; tar -zcvf ../getsky_build_${VERSION}.tar.gz ./**; 
+	rm -rf ./package
 
 package: check-version build prepare-package zip-package ## Builds and packages all artifacts
 

@@ -1,4 +1,4 @@
 package src
 
 // VERSION represents a version of the getsky.
-const VERSION = "1.0.0.build1"
+const VERSION = "1.0.0.0"

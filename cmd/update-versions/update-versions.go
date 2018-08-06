@@ -42,8 +42,8 @@ func main() {
 
 	goPgkVersionPath := "./src/version.go"
 	jsPgkVersionPath := "./web/package.json"
-	oldVersion := "1.0.0.build1"
-	newVersion := version + ".build" + buildNumber
+	oldVersion := "1.0.0.0"
+	newVersion := version + "." + buildNumber
 	replaceFileContent(goPgkVersionPath, oldVersion, newVersion)
 	replaceFileContent(jsPgkVersionPath, oldVersion, newVersion)
 }

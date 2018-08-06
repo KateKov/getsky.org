@@ -53,7 +53,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = replaceFileContent(jsPgkVersionPath, newVersion)
+	err = replaceFileContent(jsPgkVersionPath, version)
 	if err != nil {
 		panic(err)
 	}

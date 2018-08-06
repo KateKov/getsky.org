@@ -8,13 +8,14 @@ import (
 	"strings"
 )
 
-func replaceFileContent(path string, old string, new string) error {
+func replaceFileContent(path string, new string) error {
+	/* #nosec */
 	read, err := ioutil.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
 
-	newContents := strings.Replace(string(read), old, new, -1)
+	newContents := strings.Replace(string(read), "1.0.0.0", new, -1)
 
 	err = ioutil.WriteFile(path, []byte(newContents), 0)
 	if err != nil {
@@ -34,7 +35,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
+	closeFile := func() {
+		if err := f.Close(); err != nil {
+			panic(err)
+		}
+	}
+	defer closeFile()
 	scanner := bufio.NewScanner(f)
 	scanner.Scan()
 	version := scanner.Text()
@@ -42,8 +48,13 @@ func main() {
 
 	goPgkVersionPath := "./src/version.go"
 	jsPgkVersionPath := "./web/package.json"
-	oldVersion := "1.0.0.0"
 	newVersion := version + "." + buildNumber
-	replaceFileContent(goPgkVersionPath, oldVersion, newVersion)
-	replaceFileContent(jsPgkVersionPath, oldVersion, newVersion)
+	err = replaceFileContent(goPgkVersionPath, newVersion)
+	if err != nil {
+		panic(err)
+	}
+	err = replaceFileContent(jsPgkVersionPath, newVersion)
+	if err != nil {
+		panic(err)
+	}
 }

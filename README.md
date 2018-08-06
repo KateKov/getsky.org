@@ -67,3 +67,6 @@ Error response:
 ```
 {"dbStatus":"error_text","coinMarketCapStatus":"OK","marketCapLastUpdatedAt":"2018-07-19T07:58:42Z"}
 ```
+
+## Version management:
+Version of the application is set in the `VERSION.env` file. Script in the `./cmd/update-versions/update-versions.go` updates versions of the backend and client applications based information, provided in the `VERSION.env` file.

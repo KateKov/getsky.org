@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/skycoin/getsky.org/src"
 	"github.com/skycoin/getsky.org/src/util/httputil"
 )
 
 type statusResponse struct {
+	Version                string `json:"version"`
 	DbStatus               string `json:"dbStatus"`
 	CoinMarketCapStatus    string `json:"coinMarketCapStatus"`
 	MarketCapLastUpdatedAt string `json:"marketCapLastUpdatedAt"`
@@ -26,6 +28,7 @@ func StatusHandler(s *HTTPServer) httputil.APIHandler {
 			dbStatus = fmt.Sprintf("%s", err)
 		}
 		status := &statusResponse{
+			Version:                src.VERSION,
 			DbStatus:               dbStatus,
 			CoinMarketCapStatus:    "OK",
 			MarketCapLastUpdatedAt: (*s.skycoinPrices).GetLastUpdateTime().UTC().Format(time.RFC3339),

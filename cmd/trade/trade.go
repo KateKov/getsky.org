@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/namsral/flag"
 	"github.com/skycoin/getsky.org/db"
+	"github.com/skycoin/getsky.org/src"
 	"github.com/skycoin/getsky.org/src/mail"
 	"github.com/skycoin/getsky.org/src/skycoinPrice"
 	"github.com/skycoin/getsky.org/src/trade"
@@ -12,6 +15,8 @@ import (
 )
 
 func main() {
+	fmt.Println("Current version: ", src.VERSION)
+
 	flag.String(flag.DefaultConfigFlagname, "", "path to config file")
 	bindingFlag := flag.String("binding", "0.0.0.0:8081", "HTTP server binding")
 	mysqlFlag := flag.String("mysql", "root:root@(0.0.0.0:3306)", "MySQL connect string")

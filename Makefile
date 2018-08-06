@@ -24,17 +24,14 @@ prepare-package: ## Copies all artifacts to the package folder
 	cp ./cmd/trade/example.conf ./package/backend/default.conf
 	cp -r ./db/schema/** ./package/migrations
 
-check-version: ## Check if $VERSION env variable has value
-ifeq ($(VERSION),)
-	echo "VERSION env variable must be set"; 
-	exit -1;
-endif
-
 zip-package: ## Creates archives with build artifacts
 	cd ./package; tar -zcvf ../getsky_build_${VERSION}.tar.gz ./**; 
 	rm -rf ./package
 
-package: check-version build prepare-package zip-package ## Builds and packages all artifacts
+update-versions: ##
+	go run ./cmd/update-versions/update-versions.go
+
+package: update-versions build prepare-package zip-package ## Builds and packages all artifacts
 
 run-web: ## Runs web app locally
 	cd web; npm start

@@ -17,6 +17,8 @@ import { registerApiInterceptor } from '../api/requestInterceptor';
 import skycoinLight from '../fonts/Skycoin-Light.woff';
 import skycoinBold from '../fonts/Skycoin-Bold.woff';
 
+const packageInfo = require('../../package.json');
+
 injectGlobal`
   @font-face {
     font-family: ${theme.fontLight};
@@ -55,7 +57,7 @@ injectGlobal`
   }
 `;
 
-const Wrapper = styled(Flex) `
+const Wrapper = styled(Flex)`
     min-height: 100vh;
     max-width: 100%;
     overflow-x: hidden;
@@ -63,10 +65,15 @@ const Wrapper = styled(Flex) `
 
 registerApiInterceptor(store);
 
+const Version = styled.div`
+    display: none;
+`;
+
 const Root = ({ locale, ...props }) => (
     <ThemeProvider theme={theme}>
         <AppInitializer>
             <Wrapper flexDirection="column">
+                <Version>{'Client version: ' + packageInfo.version}</Version>
                 <Header />
                 <Routes {...props} />
                 <Footer />

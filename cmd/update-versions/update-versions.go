@@ -58,5 +58,8 @@ func main() {
 		panic(err)
 	}
 
-	os.Setenv("VERSION", newVersion)
+	err = os.Setenv("VERSION", newVersion)
+	if err != nil {
+		panic(err)
+	}
 }

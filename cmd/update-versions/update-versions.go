@@ -57,4 +57,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	os.Setenv("VERSION", newVersion)
 }

@@ -13,7 +13,7 @@ ssh-keyscan $IP >> ~/.ssh/known_hosts
 
 # start deployment process
 # create directory for current version
-ssh $RUN_USER@$IP -p $PORT "cd ${APP_USER_DIR}; mkdir -p getsky.${VERSION}"
+ssh $RUN_USER@$IP -p $PORT "mkdir -p ${APP_USER_DIR}/getsky.${VERSION}"
 # send build archive to the target server via sertificate
 rsync -avzhe ssh getsky_build_${VERSION}.tar.gz $RUN_USER@$IP:${APP_USER_DIR}/getsky.${VERSION}
 # unpack archive into the version dir, copy build file to the backend and client, migrate database
@@ -28,10 +28,9 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
     fi
 
     ln -s ${APP_USER_DIR}/getsky.${VERSION} current_version
-    cp ${APP_USER_DIR}/current_version/backend/trade /home/skycoin/go/bin/trade
-    cp ${APP_USER_DIR}/current_version/backend/default.conf /home/skycoin/.getsky.conf
-    rsync -avh ${APP_USER_DIR}/current_version/client  /usr/share/nginx/html/
-    migrate -database 'mysql://buysky:${VERSION}@(localhost:3306)/getskytrade' -source file://current_version/migrations up
+    cp ${APP_USER_DIR}/current_version/backend/trade ${SKYCOIN_SERVICE_PATH}
+    rsync -avh ${APP_USER_DIR}/current_version/client ${NGINX_SERVICE_PATH}
+    migrate -database 'mysql://${TRADE_MYSQL_MIGRATIONS}/getskytrade' -source file://current_version/migrations up
     systemctl start getsky
     sudo service nginx restart
 EOF

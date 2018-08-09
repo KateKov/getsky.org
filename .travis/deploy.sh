@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e # exit on first error
-openssl aes-256-cbc -K $encrypted_9bae4e74c486_key -iv $encrypted_9bae4e74c486_iv -in ./.travis/id_rsa.getsky.deploy.enc -out ./.travis/id_rsa.getsky.deploy -d
+openssl aes-256-cbc -K $encrypted_732b5993a62d_key -iv $encrypted_732b5993a62d_iv -in ./.travis/id_rsa.getsky.deploy.enc -out ./.travis/id_rsa.getsky.deploy -d
 
 eval "$(ssh-agent -s)" # start ssh-agent cache
 # id_rsa is decrypted as the first step of Travis build, see .travis.yml

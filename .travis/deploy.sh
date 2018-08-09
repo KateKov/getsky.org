@@ -5,7 +5,22 @@ openssl aes-256-cbc -K $encrypted_9bae4e74c486_key -iv $encrypted_9bae4e74c486_i
 eval "$(ssh-agent -s)" # start ssh-agent cache
 # id_rsa is decrypted as the first step of Travis build, see .travis.yml
 chmod 600 .travis/id_rsa.getsky.deploy # allow read access to the private key
-ssh-add .travis/id_rsa.getsky.deploy # add the private key to SSH
+# Add the private key to the ssh-agent
+# Enter passphrase automatically
+expect >/dev/null 2>&1 << EOF
+  set timeout 10
+  spawn ssh-add .travis/id_rsa.getsky.deploy
+  expect {
+    "Enter passphrase for" {
+      send "$ssh_pass\r"
+    }
+  }
+  expect {
+    timeout { exit 1 }
+    "denied" { exit 1 }
+    eof { exit 0 }
+  }
+EOF
 
 # prevent authenticity confirmations 
 ssh-keyscan $IP >> ~/.ssh/known_hosts

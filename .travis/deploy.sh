@@ -26,7 +26,7 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
         rm -rf ${APP_USER_DIR}/current_version
     fi
 
-    ln -s ${APP_USER_DIR}/getsky.${VERSION} current_version
+    ln -s ${APP_USER_DIR}/getsky.${VERSION} ${APP_USER_DIR}/current_version
     cp ${APP_USER_DIR}/current_version/backend/trade ${SKYCOIN_SERVICE_PATH}
     rsync -avh ${APP_USER_DIR}/current_version/client ${NGINX_HTML_PATH}
     migrate -database 'mysql://${MYSQL_CONNECTION_STRING}/getskytrade' -source file://current_version/migrations up

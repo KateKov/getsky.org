@@ -31,6 +31,5 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
     rsync -avh ${APP_USER_DIR}/current_version/client ${NGINX_HTML_PATH}
     migrate -database 'mysql://${MYSQL_CONNECTION_STRING}/getskytrade' -source file://current_version/migrations up
     systemctl start getsky
-    sudo service nginx restart
 EOF
 

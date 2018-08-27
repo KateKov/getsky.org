@@ -20,15 +20,21 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
     sudo systemctl stop getsky
     
     cd ${APP_USER_DIR}/getsky.${VERSION}; tar -zxvf getsky_build_${VERSION}.tar.gz
-
-    if [ -d ${APP_USER_DIR}/current_version ]
+	
+	if [ -d ${SKYCOIN_CLIENT_PATH}]
+    then
+        rm -rf ${SKYCOIN_CLIENT_PATH}
+    fi	
+	ln -s  ${NGINX_PATH} ${SKYCOIN_CLIENT_PATH}
+	
+	if [ -d ${APP_USER_DIR}/current_version ]
     then
         rm -rf ${APP_USER_DIR}/current_version
     fi
-
+	
     ln -s ${APP_USER_DIR}/getsky.${VERSION} ${APP_USER_DIR}/current_version
     cp ${APP_USER_DIR}/current_version/backend/trade ${SKYCOIN_SERVICE_PATH}
-    rsync -avh ${APP_USER_DIR}/current_version/client ${NGINX_HTML_PATH}
+    rsync -avh ${APP_USER_DIR}/current_version/client ${SKYCOIN_CLIENT_PATH}
     migrate -database 'mysql://${MYSQL_CONNECTION_STRING}/getskytrade' -source file://current_version/migrations up
     sudo systemctl start getsky
 EOF

@@ -17,7 +17,7 @@ ssh $RUN_USER@$IP -p $PORT "mkdir -p ${APP_USER_DIR}/getsky.${VERSION}"
 rsync -avzhe ssh getsky_build_${VERSION}.tar.gz $RUN_USER@$IP:${APP_USER_DIR}/getsky.${VERSION}
 # unpack archive into the version dir, copy build file to the backend and client, migrate database
 ssh $RUN_USER@$IP -p $PORT <<EOF
-    systemctl stop getsky
+    sudo systemctl stop getsky
     
     cd ${APP_USER_DIR}/getsky.${VERSION}; tar -zxvf getsky_build_${VERSION}.tar.gz
 
@@ -30,6 +30,6 @@ ssh $RUN_USER@$IP -p $PORT <<EOF
     cp ${APP_USER_DIR}/current_version/backend/trade ${SKYCOIN_SERVICE_PATH}
     rsync -avh ${APP_USER_DIR}/current_version/client ${NGINX_HTML_PATH}
     migrate -database 'mysql://${MYSQL_CONNECTION_STRING}/getskytrade' -source file://current_version/migrations up
-    systemctl start getsky
+    sudo systemctl start getsky
 EOF
 
